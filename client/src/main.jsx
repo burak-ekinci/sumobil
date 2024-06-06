@@ -33,7 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Layout children={<Card />} />,
+    element: <Layout />,
     errorElement: <Error />, // Eşleşmeyen rotaları işle
   },
 ]);
