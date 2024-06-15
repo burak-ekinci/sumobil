@@ -1,21 +1,55 @@
 import React from "react";
-import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../state-management/contexts/userContext";
 
 const Home = () => {
-  const { user, login, logout } = useContext(UserContext);
   return (
-    <div className="container border border-3 rounded p-5 m-5 row row-cols-auto d-flex justify-content-around align-items-center">
-      <div className="col">
-        <h1>ApeX: Think, Write.</h1>
-        <h2>{user}</h2>
-      </div>
-      <div className="col">
-        <Link className="btn btn-warning btn-lg" to="/login">
-          {" "}
-          Başlayalım{" "}
-        </Link>
+    <div
+      style={{
+        backgroundImage: "url(/hero-bg.png)",
+        height: "100vh",
+      }}
+    >
+      <nav className="navbar navbar-expand-lg navbar-light bg-light ms-4 d-flex justify-content-around">
+        <a className="navbar-brand" href="/">
+          <img style={{ maxWidth: 120 }} src="/logo1.png" alt="" />
+        </a>
+
+        <div className="nav-item">
+          <Link to={"/login"} className="btn btn-primary btn-sm me-3">
+            Giriş Yap
+          </Link>
+          <Link to={"/signup"} className="btn btn-outline-primary btn-sm">
+            Kayııt Ol
+          </Link>
+        </div>
+      </nav>
+      <div className="container">
+        <div className="row">
+          <div
+            style={{ height: "35vh" }}
+            className="col-md-6 d-flex justify-content-center align-items-center"
+          >
+            <div className="fs-1">
+              <h1 className="text-primary">
+                <strong>SU MOBİL</strong>
+              </h1>
+              <h2>Su istiyorsan mobilden iste :)</h2>
+            </div>
+          </div>
+          <div
+            style={{ height: "35vh" }}
+            className="col-md-6 d-flex justify-content-center align-items-center"
+          >
+            <div>
+              <img
+                width={400}
+                className="img-fluid"
+                src="/public/logo1.png"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
