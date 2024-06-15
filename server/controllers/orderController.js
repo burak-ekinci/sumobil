@@ -34,10 +34,11 @@ const setOrder = async (req,res) => {
       status: orderDetail.status // Enum değerlerinden biri olmalı
     });
     await order.save()
+    global.io.emit('new_order', order); // Yeni sipariş bildirimi gönder
     return res.status(201).json({ message: 'Siparişiniz alındı: ' });
 
     // Firma sahibine gerçek zamanlı bildirim gönder
-    // io.emit('newOrder', { order });
+    // io.emit('new_order', { order });
 
   } catch (error) {
     return res.status(500).json({ error: error.message });

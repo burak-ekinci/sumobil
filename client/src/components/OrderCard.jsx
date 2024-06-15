@@ -4,11 +4,29 @@ import { useEffect, useState } from "react";
 import Order from "./Order";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import io from "socket.io-client";
 
 function OrderCard() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
+    const socket = io("http://localhost:3000", { transports: ["websocket"] });
+    const notificationSound = document.getElementById("notificationSound");
+    socket.on("new_order", (order) => {
+      notificationSound.play();
+
+      setOrders((prevOrders) => [...prevOrders, order]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    // const notificationSound = document.getElementById("notificationSound");
+    // notificationSound.play();
+
     const getOrders = async () => {
       // user defining
       const token = localStorage.getItem("user");
@@ -41,7 +59,7 @@ function OrderCard() {
       }
     };
     getOrders();
-  }, []);
+  }, [orders]);
 
   return (
     <>
