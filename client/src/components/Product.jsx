@@ -2,57 +2,76 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Spinner from "./Spinner";
 
 const Product = ({ product }) => {
+  const [loading, setLoading] = useState(false);
   // navigate hook
   const navigate = useNavigate();
 
   // refs
   const amountRef = useRef();
+  // Auth Context
+  useEffect(() => {
+    const checkLogin = () => {
+      const jwt = localStorage.getItem("user");
+      const token = jwtDecode(jwt);
+      if (token == null) {
+        toast.error("Bu alana erişebilmeniz için önce giriş yapmalısınız!");
+        navigate("/login");
+      }
+    };
+    checkLogin();
+  });
 
-  // user defining
   const token = localStorage.getItem("user");
   const user = jwtDecode(token);
 
   const deleteProduct = async () => {
+    setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:3000/product/deleteproduct",
-        { _id: product._id }
-      );
+      await axios.post("http://localhost:3000/product/deleteproduct", {
+        _id: product._id,
+      });
+      setLoading(false);
       navigate(0);
     } catch (error) {
+      setLoading(false);
       toast.error(response.data.error);
     }
   };
 
   const makeOrder = async () => {
+    setLoading(true);
     try {
+      const orderTemplate = {
+        user: user.id,
+        product: product._id,
+        amount: amountRef.current.value,
+        totalPrice: amountRef.current.value * product.price,
+        status: "Beklemede", // Enum değerlerinden biri olmalı
+      };
       const response = await axios.post(
         "http://localhost:3000/order/setorder",
-        {
-          user: user._id,
-          product: product._id,
-          amount: amountRef.current.value,
-          totalPrice: amountRef.current.value * product.price,
-          status: "Beklemede", // Enum değerlerinden biri olmalı
-        }
+        orderTemplate
       );
+      setLoading(false);
       toast.success(
-        "Siparişiniz alındı: " +
+        response.data.message +
           amountRef.current.value +
-          " tane" +
+          " tane " +
           product.name
       );
     } catch (error) {
-      toast.error(response.data.error);
+      setLoading(false);
+      toast.error(error.message);
     }
   };
 
   return (
-    <div className="App">
-      <div className="container mt-5">
+    <div className="App mb-3">
+      <div className="container">
         <div className="card">
           <div className="row no-gutters">
             <div className="col-md-3 d-flex align-items-center justify-content-center">
@@ -84,10 +103,26 @@ const Product = ({ product }) => {
                 placeholder="Adet girin"
                 style={{ width: "50%" }}
               />
-              <button className="btn btn-success">Sipariş ver</button>
+              <button onClick={makeOrder} className="btn btn-success">
+                Sipariş ver{" "}
+                {loading ? (
+                  <Spinner color={"white"} size={"spinner-border-sm"} />
+                ) : null}
+              </button>
               {user.role == "admin" ? (
-                <button onClick={deleteProduct} className="btn btn-danger mt-2">
-                  Ürünü Sil
+                <button
+                  onClick={() => {
+                    const confirm = window.confirm(
+                      product.name + " ürününü silmek siliyorsun"
+                    );
+                    if (confirm) deleteProduct();
+                  }}
+                  className="btn btn-danger mt-2"
+                >
+                  Ürünü Sil{" "}
+                  {loading ? (
+                    <Spinner color={"white"} size={"spinner-border-sm"} />
+                  ) : null}
                 </button>
               ) : null}
             </div>

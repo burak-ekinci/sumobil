@@ -2,21 +2,34 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
+// import isTokenExpired from "../hooks/jwtExpire";
 
 function MainPageLayout({ children }) {
   const navigate = useNavigate();
 
+  const isTokenExpired = (token) => {
+    try {
+      const decoded = jwtDecode(token);
+      if (!decoded.exp) {
+        return true;
+      }
+      const currentTime = Date.now() / 1000;
+      return decoded.exp < currentTime;
+    } catch (error) {
+      return true;
+    }
+  };
   // Auth Context
   useEffect(() => {
     const checkLogin = () => {
-      const token = localStorage.getItem("user");
+      const jwt = localStorage.getItem("user");
+      const token = jwtDecode(jwt);
       if (token == null) {
         toast.error("Bu alana erişebilmeniz için önce giriş yapmalısınız!");
         navigate("/login");
       }
-
-      checkLogin();
     };
+    checkLogin();
   });
 
   const token = localStorage.getItem("user");

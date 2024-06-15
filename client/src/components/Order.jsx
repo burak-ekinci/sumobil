@@ -2,9 +2,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-import { useRef } from "react";
+import Spinner from "./Spinner";
+import { useState } from "react";
 
 const Order = ({ order }) => {
+  const [loading, setLoading] = useState(false);
+
   // navigate hook
   const navigate = useNavigate();
 
@@ -13,6 +16,7 @@ const Order = ({ order }) => {
   const user = jwtDecode(token);
 
   const deleteOrder = async () => {
+    setLoading(true);
     const alrt = window.confirm("Sipariş teslim edildi mi?");
     if (alrt) {
       try {
@@ -20,39 +24,19 @@ const Order = ({ order }) => {
           "http://localhost:3000/order/deleteorder",
           { _id: order._id }
         );
+        setLoading(false);
         navigate(0);
       } catch (error) {
+        setLoading(false);
         toast.error(response.data.error);
       }
     }
   };
 
-  const makeOrder = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/order/setorder",
-        {
-          user: user._id,
-          product: product._id,
-          amount: amountRef.current.value,
-          totalPrice: amountRef.current.value * product.price,
-          status: "Beklemede", // Enum değerlerinden biri olmalı
-        }
-      );
-      toast.success(
-        "Siparişiniz alındı: " +
-          amountRef.current.value +
-          " tane" +
-          product.name
-      );
-    } catch (error) {
-      toast.error(response.data.error);
-    }
-  };
   const createdAt = new Date(order.createdAt);
   return (
-    <div className="App">
-      <div className="container mt-5">
+    <div className="App mb-3">
+      <div className="container">
         <div className="card">
           <div className="row no-gutters">
             <div className="col-md-3 d-flex align-items-center justify-content-center">
@@ -73,10 +57,13 @@ const Order = ({ order }) => {
                   <strong>Müşteri Telefon:</strong> {order.user.phone}
                 </p>
                 <p className="card-text">
+                  <strong>Adet:</strong> {order.amount}
+                </p>
+                <p className="card-text">
                   <strong>Adres:</strong> {order.user.address}
                 </p>
                 <p className="card-text">
-                  <strong>Ücret:</strong> {order.product.price} ₺
+                  <strong>Ücret:</strong> {order.totalPrice} ₺
                 </p>
                 <p className="card-text">
                   <strong>Sipariş zamanı:</strong> {createdAt.toLocaleString()}
@@ -95,9 +82,21 @@ const Order = ({ order }) => {
                   }}
                   className="btn btn-success mt-2"
                 >
-                  Teslim Edildi
+                  Teslim Edildi{" "}
+                  {loading ? (
+                    <Spinner color={"white"} size={"spinner-border-sm"} />
+                  ) : null}
                 </button>
-              ) : null}
+              ) : (
+                <button
+                  onClick={() => {
+                    deleteOrder();
+                  }}
+                  className="btn btn-success mt-2"
+                >
+                  İptal et
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Spinner from "./Spinner";
 
 const SignUpPage = () => {
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const checkLogin = () => {
       const token = window.localStorage.getItem("user");
@@ -27,6 +29,7 @@ const SignUpPage = () => {
 
   // UserCheck function
   const userCheck = async () => {
+    setLoading(true);
     // Password length must be min 4 char
     if (passwordRef.current.value.length < 4) {
       toast.warning("Şifre minimum 4 karakterli olmalı");
@@ -43,11 +46,12 @@ const SignUpPage = () => {
       })
       .then((res) => {
         if (res.data.valid == false) {
+          setLoading(false);
           toast.error(res.data.message);
           navigate("/signup");
           return;
         }
-
+        setLoading(false);
         toast.success(res.data.message);
         toast.info("Lütfen giriş yapın", {
           autoClose: 7000,
@@ -56,20 +60,20 @@ const SignUpPage = () => {
       })
       .catch((err) => {
         if (err.response.data.valid == false) {
+          setLoading(false);
           toast.error(err.response.data.message);
           navigate("/signup");
           return;
         }
+        setLoading(false);
         toast.error(err.response.data.message);
         navigate("/signup");
       });
-
-    console.log("response: --> ", res);
   };
 
   return (
     <>
-      <div className="container mt-5">
+      <div className="container my-4">
         <div className="row justify-content-center">
           <div className="col-md-6">
             <div className="card">
@@ -90,6 +94,7 @@ const SignUpPage = () => {
                 <h3 className="card-title text-center text-primary fs-2">
                   KAYIT OL
                 </h3>
+
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -121,12 +126,14 @@ const SignUpPage = () => {
                     />
                   </div>
                   <div className="form-group mb-3">
-                    <label className="form-label">Telefon Numaranız</label>
+                    <label className="form-label text-danger fs-bold">
+                      Başında 0 olmadan Telefon Numaranız
+                    </label>
                     <input
                       type="text"
                       className="form-control"
                       id="inputUsername"
-                      placeholder="Telefon numaranızı girin"
+                      placeholder="Telefon numaranızı girin (örn: 5431231212)"
                       ref={phoneRef}
                       minLength={10}
                       maxLength={10}
@@ -159,16 +166,19 @@ const SignUpPage = () => {
                   </div>
                   <button
                     type="submit"
-                    className="btn btn-success btn-md px-4 btn-block"
+                    className="btn btn-primary btn-md px-4 btn-block"
                   >
-                    KAYDOL
+                    KAYDOL{" "}
+                    {loading ? (
+                      <Spinner color={"white"} size={"spinner-border-sm"} />
+                    ) : null}
                   </button>
                 </form>
-                <div className="container d-flex-justify-content-center align-items-center p-2 m-2">
+                <div className="container d-flex justify-content-center align-items-center mt-3 ">
                   <Link
                     to={"/login"}
                     type="button"
-                    className="btn btn-sm btn-outline-success"
+                    className="btn btn-sm btn-outline-warning"
                   >
                     {" "}
                     Zaten hesabın var mı? Giriş yap.
@@ -179,67 +189,6 @@ const SignUpPage = () => {
           </div>
         </div>
       </div>
-
-      {/* <div className="container border m-5 p-3">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            userCheck();
-          }}
-        >
-          <div className="mb-3">
-            <label className="form-label">Email</label>
-            <input
-              type="email"
-              className="form-control"
-              id="inputEmail"
-              aria-describedby="email"
-              ref={emailRef}
-              required
-            />
-            <div id="emailHelp" className="form-text">
-              We'll never share your email with anyone else.
-            </div>
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Username</label>
-            <input
-              type="text"
-              minLength={4}
-              maxLength={10}
-              className="form-control"
-              id="inputUsername"
-              aria-describedby="username"
-              ref={usernameRef}
-              required
-            />
-            <div id="emailHelp" className="form-text">
-              We'll never share your email with anyone else.
-            </div>
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              minLength={4}
-              maxLength={10}
-              className="form-control"
-              id="inputPassword"
-              ref={passwordRef}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </form>
-        <div className="container d-flex-justify-content-center align-items-center p-2 m-2">
-          <Link to={"/login"} type="button" className="btn btn-outline-warning">
-            {" "}
-            Hesabın var mı? giriş yap.
-          </Link>
-        </div>
-      </div> */}
     </>
   );
 };

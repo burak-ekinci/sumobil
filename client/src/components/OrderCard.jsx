@@ -9,7 +9,7 @@ function OrderCard() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const getProducts = async () => {
+    const getOrders = async () => {
       // user defining
       const token = localStorage.getItem("user");
       const user = jwtDecode(token);
@@ -22,11 +22,11 @@ function OrderCard() {
         } catch (error) {
           toast.error(error.message);
         }
-      } else {
+      } else if (user.role == "user") {
         try {
           const response = await axios.post(
             "http://localhost:3000/order/getmyorder",
-            { _id: user._id }
+            { phone: user.phone }
           );
           if (response.data.orders != null) {
             setOrders(response.data.orders);
@@ -36,15 +36,17 @@ function OrderCard() {
         } catch (error) {
           toast.error(error.message);
         }
+      } else {
+        toast.error("Authenticated error!");
       }
     };
-    getProducts();
+    getOrders();
   }, []);
 
   return (
     <>
       {orders == [] ? (
-        <div>Hiç siparişin yok!</div>
+        <div className="container bg-warning">Hiç siparişin yok!</div>
       ) : (
         orders.map((order) => <Order key={order._id} order={order} />)
       )}

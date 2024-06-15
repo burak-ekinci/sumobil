@@ -12,7 +12,7 @@ function ProductCard() {
         const response = await axios.get(
           "http://localhost:3000/product/getproducts"
         );
-        setProducts(response.data.products.reverse());
+        setProducts(response.data.products);
       } catch (error) {
         toast.error(error.message);
       }

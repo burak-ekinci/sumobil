@@ -53,7 +53,7 @@ const login = async (req,res,next) => {
     const token = jwt.sign(
       { id: user._id, fullName: user.fullName, phone: user.phone, role: user.role },
       'abcd',
-      { expiresIn: '1h' }
+      { expiresIn: '2m' }
     );
     return res.status(200).json({ valid: true, user, message: `Başarıyla giriş yaptınız: ${user.phone}`, token: token});
   } catch (error) {

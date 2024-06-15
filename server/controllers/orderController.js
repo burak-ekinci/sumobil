@@ -8,7 +8,7 @@ const getOrder = async (req,res) => {
 }
 
 const getMyOrder = async (req,res) => {
-  const orders = await Order.find({_id: req.body_id});
+  const orders = await Order.find({"user.phone": req.body.phone});
     return res.json({orders})
 }
 
@@ -33,12 +33,12 @@ const setOrder = async (req,res) => {
       totalPrice: orderDetail.totalPrice,
       status: orderDetail.status // Enum değerlerinden biri olmalı
     });
-    await order.save();
+    await order.save()
+    return res.status(201).json({ message: 'Siparişiniz alındı: ' });
 
     // Firma sahibine gerçek zamanlı bildirim gönder
     // io.emit('newOrder', { order });
 
-    return res.status(201).json({ message: 'Siparişiniz alındı: ' });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
