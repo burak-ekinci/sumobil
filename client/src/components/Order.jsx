@@ -31,6 +31,7 @@ const Order = ({ order }) => {
         toast.error(response.data.error);
       }
     }
+    setLoading(false);
   };
 
   const createdAt = new Date(order.createdAt);
