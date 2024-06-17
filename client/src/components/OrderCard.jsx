@@ -22,7 +22,7 @@ function OrderCard() {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [orders]);
 
   useEffect(() => {
     const getOrders = async () => {
