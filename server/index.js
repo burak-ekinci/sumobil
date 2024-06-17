@@ -6,11 +6,7 @@ const ProductRouter = require("./routers/productRouter")
 const OrderRouter = require("./routers/orderRouter")
 const { Server } = require('socket.io');
 const http = require("http")
-const OrderController = require("./controllers/orderController")
-const Order = require("./models/orderModel")
 const dotenv = require("dotenv").config()
-
-
 
 const app = express()
 const server = http.createServer(app);

@@ -81,7 +81,7 @@ const SignUpPage = () => {
                 <h3 className="card-title text-center">
                   <a className="navbar-brand" href="/">
                     <img
-                      src="/public/logo1.png"
+                      src="/logo1.png"
                       alt="Logo"
                       width={200}
                       data-aos="zoom-out"

@@ -41,12 +41,7 @@ const Home = () => {
             className="col-md-6 d-flex justify-content-center align-items-center"
           >
             <div>
-              <img
-                width={400}
-                className="img-fluid"
-                src="/public/logo1.png"
-                alt=""
-              />
+              <img width={400} className="img-fluid" src="/logo1.png" alt="" />
             </div>
           </div>
         </div>
