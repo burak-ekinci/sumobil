@@ -75,22 +75,22 @@ After running these commands, application has db connection with mongo Server.
 ## &#9745; User Registration and Login
 
 You can see our roadmap and understand where the project is heading.
-<br> <img src="https://github.com/burak-ekinci/sumobil/client/public/ss/home"> <br> </br>
+<br> <img src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/home.png"> <br> </br>
 
 ## &#9745; User Registration and Login
 
 You can see our roadmap and understand where the project is heading.
-<br> <img src="https://github.com/burak-ekinci/sumobil/client/public/ss/signup"> <br> </br>
-<br> <img src="https://github.com/burak-ekinci/sumobil/client/public/ss/login"> <br> </br>
+<br> <img src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/signup.png"> <br> </br>
+<br> <img src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/login.png"> <br> </br>
 
 ## &#9745; Water Ordering
 
 You can see our roadmap and understand where the project is heading.
-<br> <img src="https://github.com/burak-ekinci/sumobil/client/public/ss/makeorder"> <br> </br>
+<br> <img src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/makeorder.mp4"> <br> </br>
 
 ## &#9745; Business Owner Panel
 
 You can see our roadmap and understand where the project is heading.
-<br> <img src="https://github.com/burak-ekinci/sumobil/client/public/ss/addproduct"> <br> </br>
+<br> <img src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/addproduct.mp4"> <br> </br>
 
 For more detailed instructions and information, please refer to the project's documentation or contact the project maintainers.
