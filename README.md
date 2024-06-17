@@ -86,7 +86,8 @@ You can see our roadmap and understand where the project is heading.
 ## &#9745; Water Ordering
 
 You can see our roadmap and understand where the project is heading.
-https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/makeorder.mp4
+<br> [![video_url.mp4](https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/addproduct.mp4)
+
 
 
 ## &#9745; Business Owner Panel
