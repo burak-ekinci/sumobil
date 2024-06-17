@@ -32,15 +32,7 @@ function OrderCard() {
       setOrders((prevOrders) => [...prevOrders, order]);
 
       const notificationSound = document.getElementById("notificationSound");
-      if (notificationSound) {
-        notificationSound.play().catch((error) => {
-          console.error("Playback error:", error);
-        });
-      }
-
-      // Bildirimi aldıktan sonra bağlantıyı kapat
-      socket.disconnect();
-      socket.off("new_order");
+      notificationSound.play();
     });
 
     // Clean up function
@@ -50,7 +42,7 @@ function OrderCard() {
       }
       socket.off("new_order");
     };
-  }, [orders]);
+  }, []);
 
   useEffect(() => {
     const getOrders = async () => {
