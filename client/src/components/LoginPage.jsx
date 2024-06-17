@@ -11,7 +11,7 @@ const LoginPage = () => {
       const token = window.localStorage.getItem("user");
       if (token) {
         toast.warning("Zaten giriş yapılmış");
-        return navigate("/products");
+        navigate("/products");
       }
     };
 
