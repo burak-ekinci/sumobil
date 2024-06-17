@@ -86,12 +86,12 @@ You can see our roadmap and understand where the project is heading.
 ## &#9745; Water Ordering
 
 You can see our roadmap and understand where the project is heading.
-<br> [![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)]([https://www.youtube.com/watch?v=ek1j272iAmc](https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/makeorder.mp4)) 
+https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/makeorder.mp4
 
 
 ## &#9745; Business Owner Panel
 
 You can see our roadmap and understand where the project is heading.
-<br> <img src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/addproduct.mp4"> <br> </br>
+https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/addproduct.mp4
 
 For more detailed instructions and information, please refer to the project's documentation or contact the project maintainers.
