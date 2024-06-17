@@ -10,7 +10,14 @@ const dotenv = require("dotenv").config()
 
 const app = express()
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "https://sumobil.vercel.app",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+  credentials: true
+  }
+});
 
 global.io = io;
 

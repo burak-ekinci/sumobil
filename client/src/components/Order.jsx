@@ -27,7 +27,6 @@ const Order = ({ order }) => {
           }
         );
         setLoading(false);
-        navigate(0);
       } catch (error) {
         setLoading(false);
         toast.error(response.data.error);

@@ -5,22 +5,23 @@ import Order from "./Order";
 import { jwtDecode } from "jwt-decode";
 import io from "socket.io-client";
 
+const socket = io(import.meta.env.VITE_KEY_DB, {
+  transports: ["websocket"],
+});
 function OrderCard() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_KEY_DB, {
-      transports: ["websocket"],
-    });
-    const notificationSound = document.getElementById("notificationSound");
     socket.on("new_order", async (order) => {
+      const notificationSound = document.getElementById("notificationSound");
       notificationSound.play();
 
       setOrders((prevOrders) => [...prevOrders, order]);
+      socket.disconnect();
     });
 
     return () => {
-      socket.disconnect();
+      socket.off("new_order");
     };
   }, [orders]);
 
