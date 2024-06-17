@@ -17,10 +17,10 @@ function OrderCard() {
       notificationSound.play();
 
       setOrders((prevOrders) => [...prevOrders, order]);
-      socket.disconnect();
     });
 
     return () => {
+      socket.disconnect();
       socket.off("new_order");
     };
   }, [orders]);
