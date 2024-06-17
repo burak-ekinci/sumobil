@@ -10,7 +10,7 @@ function ProductCard() {
     const getProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/product/getproducts"
+          import.meta.env.VITE_KEY_CONNECTION_STRING + "/product/getproducts"
         );
         setProducts(response.data.products);
       } catch (error) {

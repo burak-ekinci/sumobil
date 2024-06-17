@@ -8,6 +8,8 @@ const { Server } = require('socket.io');
 const http = require("http")
 const OrderController = require("./controllers/orderController")
 const Order = require("./models/orderModel")
+const dotenv = require("dotenv").config()
+
 
 
 const app = express()
@@ -28,15 +30,17 @@ io.on('connection', (socket) => {
     });
   });
 
-mongoose.connect("mongodb://127.0.0.1:27017/sumobil")
-.then(() => console.log("db connection is done"))
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
+.then(() => console.log("DB connection is done"))
 .catch(err => console.log(err))
 
 app.use("/user", UserRouter)
 app.use("/product", ProductRouter)
  app.use("/order", OrderRouter)
 
-server.listen(3000, () => {
-    console.log("The server is up from port 3000!")
+ const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+    console.log(`The server is up from port ${PORT}!`)
 })
 

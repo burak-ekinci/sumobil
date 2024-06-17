@@ -37,7 +37,7 @@ const SignUpPage = () => {
       return;
     }
     const res = await axios
-      .post("http://localhost:3000/user/signup", {
+      .post(import.meta.env.VITE_KEY_CONNECTION_STRING + "/user/signup", {
         fullName: fullNameRef.current.value,
         email: emailRef.current.value,
         phone: phoneRef.current.value,

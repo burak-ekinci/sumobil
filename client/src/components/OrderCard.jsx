@@ -2,7 +2,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import Order from "./Order";
-import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import io from "socket.io-client";
 
@@ -10,9 +9,11 @@ function OrderCard() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000", { transports: ["websocket"] });
+    const socket = io(import.meta.env.VITE_KEY_DB, {
+      transports: ["websocket"],
+    });
     const notificationSound = document.getElementById("notificationSound");
-    socket.on("new_order", (order) => {
+    socket.on("new_order", async (order) => {
       notificationSound.play();
 
       setOrders((prevOrders) => [...prevOrders, order]);
@@ -24,9 +25,6 @@ function OrderCard() {
   }, []);
 
   useEffect(() => {
-    // const notificationSound = document.getElementById("notificationSound");
-    // notificationSound.play();
-
     const getOrders = async () => {
       // user defining
       const token = localStorage.getItem("user");
@@ -34,7 +32,7 @@ function OrderCard() {
       if (user.role == "admin") {
         try {
           const response = await axios.get(
-            "http://localhost:3000/order/getorder"
+            import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/getorder"
           );
           setOrders(response.data.orders);
         } catch (error) {
@@ -43,7 +41,7 @@ function OrderCard() {
       } else if (user.role == "user") {
         try {
           const response = await axios.post(
-            "http://localhost:3000/order/getmyorder",
+            import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/getmyorder",
             { phone: user.phone }
           );
           if (response.data.orders != null) {

@@ -31,9 +31,12 @@ const Product = ({ product }) => {
   const deleteProduct = async () => {
     setLoading(true);
     try {
-      await axios.post("http://localhost:3000/product/deleteproduct", {
-        _id: product._id,
-      });
+      await axios.post(
+        import.meta.env.VITE_KEY_CONNECTION_STRING + "/product/deleteproduct",
+        {
+          _id: product._id,
+        }
+      );
       setLoading(false);
       navigate(0);
     } catch (error) {
@@ -53,7 +56,7 @@ const Product = ({ product }) => {
         status: "Beklemede", // Enum değerlerinden biri olmalı
       };
       const response = await axios.post(
-        "http://localhost:3000/order/setorder",
+        import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/setorder",
         orderTemplate
       );
       setLoading(false);
@@ -76,7 +79,7 @@ const Product = ({ product }) => {
           <div className="row no-gutters">
             <div className="col-md-3 d-flex align-items-center justify-content-center">
               <img
-                style={{ maxWidth: "20vh" }}
+                style={{ maxWidth: "30vh" }}
                 src={product.imgUrl}
                 className="card-img"
                 alt="Product Image"
@@ -84,7 +87,7 @@ const Product = ({ product }) => {
             </div>
             <div className="col-md-6">
               <div className="card-body">
-                <h5 className="card-title">{product.name}</h5>
+                <h5 className="card-title fs-4">{product.name}</h5>
                 <p className="card-text">
                   <strong>Fiyat:</strong> {product.price} ₺
                 </p>

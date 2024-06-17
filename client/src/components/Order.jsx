@@ -20,9 +20,11 @@ const Order = ({ order }) => {
     const alrt = window.confirm("Sipariş teslim edildi mi?");
     if (alrt) {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/order/deleteorder",
-          { _id: order._id }
+        await axios.post(
+          import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/deleteorder",
+          {
+            _id: order._id,
+          }
         );
         setLoading(false);
         navigate(0);
@@ -42,10 +44,10 @@ const Order = ({ order }) => {
           <div className="row no-gutters">
             <div className="col-md-3 d-flex align-items-center justify-content-center">
               <img
-                style={{ maxWidth: "20vh" }}
+                style={{ maxWidth: "30vh" }}
                 src={order.product.imgUrl}
                 className="card-img"
-                alt="Product Image"
+                alt="Order Image"
               />
             </div>
             <div className="col-md-6">

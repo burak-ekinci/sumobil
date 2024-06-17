@@ -20,7 +20,7 @@ const AddProductCard = () => {
     };
     try {
       const response = await axios.post(
-        "http://localhost:3000/product/setproduct",
+        import.meta.env.VITE_KEY_CONNECTION_STRING + "/product/setproduct",
         product
       );
       if (!response.data.valid) {

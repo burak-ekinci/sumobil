@@ -43,7 +43,10 @@ const LoginPage = () => {
 
     // Mongodan sor hele bunun şifresi doğridır?
     await axios
-      .post("http://localhost:3000/user/login", userTemplate)
+      .post(
+        import.meta.env.VITE_KEY_CONNECTION_STRING + "/user/login",
+        userTemplate
+      )
       .then(async (response) => {
         if (!response.data.valid) {
           setLoading(false);
@@ -53,7 +56,6 @@ const LoginPage = () => {
 
         // if username or password is true
         const token = response.data.token;
-        console.log(token);
         setLoading(false);
         toast.success(response.data.message);
         window.localStorage.setItem("user", token);
