@@ -17,7 +17,11 @@ const Order = ({ order }) => {
 
   const deleteOrder = async () => {
     setLoading(true);
-    const alrt = window.confirm("Sipariş teslim edildi mi?");
+    if (user.role == "admin") {
+      const alrt = window.confirm("Sipariş teslim edildi mi?");
+    } else {
+      const alrt = window.confirm("Siparişinizi iptal ediyorsunuz!");
+    }
     if (alrt) {
       try {
         await axios.post(

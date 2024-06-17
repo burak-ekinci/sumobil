@@ -5,25 +5,48 @@ import Order from "./Order";
 import { jwtDecode } from "jwt-decode";
 import io from "socket.io-client";
 
-const socket = io(import.meta.env.VITE_KEY_DB, {
-  transports: ["websocket"],
-});
 function OrderCard() {
   const [orders, setOrders] = useState([]);
 
+  // useEffect(() => {
+  //   const socket = io(import.meta.env.VITE_KEY_DB, {
+  //     transports: ["websocket"],
+  //   });
+  //   socket.on("new_order", async (order) => {
+  //     setOrders((prevOrders) => [...prevOrders, order]);
+  //   });
+  //   const notificationSound = document.getElementById("notificationSound");
+  //   notificationSound.play();
+
+  //   return () => {
+  //     socket.disconnect();
+  //     socket.off("new_order");
+  //   };
+  // }, [orders]);
   useEffect(() => {
-    socket.on("new_order", async (order) => {
+    const socket = io(import.meta.env.VITE_KEY_DB, {
+      transports: ["websocket"],
+    });
+
+    socket.on("new_order", (order) => {
+      setOrders((prevOrders) => [...prevOrders, order]);
+
       const notificationSound = document.getElementById("notificationSound");
       notificationSound.play();
 
-      setOrders((prevOrders) => [...prevOrders, order]);
-    });
-
-    return () => {
+      // Bildirimi aldıktan sonra bağlantıyı kapat
       socket.disconnect();
       socket.off("new_order");
+    });
+
+    // Clean up function
+    return () => {
+      if (socket.connected) {
+        socket.disconnect();
+      }
+      socket.off("new_order");
     };
-  }, [orders]);
+  }, []);
 
   useEffect(() => {
     const getOrders = async () => {
