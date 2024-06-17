@@ -72,7 +72,7 @@ After running these commands, application has db connection with mongo Server.
 
 ## Usage
 
-## &#9745; User Registration and Login
+## &#9745; Home Page
 
 You can see our roadmap and understand where the project is heading.
 <br> <img src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/home.png"> <br> </br>
@@ -86,7 +86,8 @@ You can see our roadmap and understand where the project is heading.
 ## &#9745; Water Ordering
 
 You can see our roadmap and understand where the project is heading.
-<br> <img src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/makeorder.mp4"> <br> </br>
+<br> <video controls><source src="https://github.com/burak-ekinci/sumobil/blob/main/client/public/ss/makeorder.mp4" type="video/mp4"></video>
+
 
 ## &#9745; Business Owner Panel
 
