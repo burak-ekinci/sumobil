@@ -6,26 +6,25 @@ import Spinner from "./Spinner";
 
 const SignUpPage = () => {
   const [loading, setLoading] = useState(false);
+  // use navigate hook for travel between pages
+  const navigate = useNavigate();
   useEffect(() => {
     const checkLogin = () => {
       const token = window.localStorage.getItem("user");
       if (token) {
         toast.warning("Zaten giriş yapılmış");
-        return navigate("/products");
+        navigate("/products");
       }
     };
 
     checkLogin();
-  }, []);
+  }, [navigate]);
   // Access the HTML elements value man!
   const fullNameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
   const addressRef = useRef(null);
   const passwordRef = useRef(null);
-
-  // use navigate hook for travel between pages
-  const navigate = useNavigate();
 
   // UserCheck function
   const userCheck = async () => {

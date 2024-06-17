@@ -6,24 +6,23 @@ import Spinner from "./Spinner";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
+  // Navigate Hook
+  const navigate = useNavigate();
   useEffect(() => {
     const checkLogin = () => {
       const token = window.localStorage.getItem("user");
       if (token) {
         toast.warning("Zaten giriş yapılmış");
-        navigate("https://sumobil.vercel.app/products");
+        navigate("/products");
       }
     };
 
     checkLogin();
-  }, []);
+  }, [navigate]);
 
   // Get username and password value
   const phoneRef = useRef(null);
   const passwordRef = useRef(null);
-
-  // Navigate Hook
-  const navigate = useNavigate();
 
   // UserCheck function
   const userCheck = async () => {
