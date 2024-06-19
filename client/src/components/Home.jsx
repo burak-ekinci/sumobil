@@ -19,7 +19,7 @@ const Home = () => {
             Giriş Yap
           </Link>
           <Link to={"/signup"} className="btn btn-outline-primary btn-sm">
-            Kayııt Ol
+            Kayıt Ol
           </Link>
         </div>
       </nav>
