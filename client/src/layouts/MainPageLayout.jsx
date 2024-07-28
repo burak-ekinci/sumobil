@@ -1,8 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
-// import isTokenExpired from "../hooks/jwtExpire";
+import { useEffect } from "react";
 
 function MainPageLayout({ children }) {
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ function MainPageLayout({ children }) {
       return true;
     }
   };
-  // Auth Context
+
   useEffect(() => {
     const checkLogin = () => {
       const jwt = localStorage.getItem("user");
@@ -35,7 +34,6 @@ function MainPageLayout({ children }) {
   const token = localStorage.getItem("user");
   const user = jwtDecode(token);
 
-  // Logout Function
   const logout = () => {
     localStorage.removeItem("user");
     toast.success("Başarı ile çıkış yapıldı");
@@ -104,10 +102,8 @@ function MainPageLayout({ children }) {
         </div>
       </nav>
 
-      <div className="container mt-5">
-        <div className="row justify-content-center">
-          <div className="col-md-8">{children}</div>
-        </div>
+      <div className="container col-9 mt-5">
+        <div className="row"> {children}</div>
       </div>
     </>
   );

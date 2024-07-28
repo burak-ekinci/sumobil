@@ -8,21 +8,6 @@ import io from "socket.io-client";
 function OrderCard() {
   const [orders, setOrders] = useState([]);
 
-  // useEffect(() => {
-  //   const socket = io(import.meta.env.VITE_KEY_DB, {
-  //     transports: ["websocket"],
-  //   });
-  //   socket.on("new_order", async (order) => {
-  //     setOrders((prevOrders) => [...prevOrders, order]);
-  //   });
-  //   const notificationSound = document.getElementById("notificationSound");
-  //   notificationSound.play();
-
-  //   return () => {
-  //     socket.disconnect();
-  //     socket.off("new_order");
-  //   };
-  // }, [orders]);
   useEffect(() => {
     const socket = io(import.meta.env.VITE_KEY_DB, {
       transports: ["websocket"],

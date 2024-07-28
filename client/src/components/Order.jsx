@@ -84,7 +84,7 @@ const Order = ({ order }) => {
                   }}
                   className="btn btn-success mt-2"
                 >
-                  Teslim Edildi{" "}
+                  BİTİR{" "}
                   {loading ? (
                     <Spinner color={"white"} size={"spinner-border-sm"} />
                   ) : null}
@@ -96,7 +96,7 @@ const Order = ({ order }) => {
                   }}
                   className="btn btn-success mt-2"
                 >
-                  İptal et
+                  İPTAL
                 </button>
               )}
             </div>

@@ -7,12 +7,9 @@ import Spinner from "./Spinner";
 
 const Product = ({ product }) => {
   const [loading, setLoading] = useState(false);
-  // navigate hook
   const navigate = useNavigate();
-
-  // refs
   const amountRef = useRef();
-  // Auth Context
+
   useEffect(() => {
     const checkLogin = () => {
       const jwt = localStorage.getItem("user");
@@ -53,7 +50,7 @@ const Product = ({ product }) => {
         product: product._id,
         amount: amountRef.current.value,
         totalPrice: amountRef.current.value * product.price,
-        status: "Beklemede", // Enum değerlerinden biri olmalı
+        status: "Beklemede",
       };
       const response = await axios.post(
         import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/setorder",
@@ -73,62 +70,74 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div className="App mb-3">
-      <div className="container">
-        <div className="card">
-          <div className="row no-gutters">
-            <div className="col-md-3 d-flex align-items-center justify-content-center">
-              <img
-                style={{ maxWidth: "30vh" }}
-                src={product.imgUrl}
-                className="card-img"
-                alt="Product Image"
-              />
-            </div>
-            <div className="col-md-6">
-              <div className="card-body">
-                <h5 className="card-title fs-4">{product.name}</h5>
-                <p className="card-text">
-                  <strong>Fiyat:</strong> {product.price} ₺
-                </p>
-                <p className="card-text">
-                  <strong>Stok:</strong> Stokta
-                </p>
+    <div className="col-sm-12 col-md-6 col-lg-4 mb-3">
+      <div className="card text-center">
+        <div className="d-flex justify-content-center mt-3">
+          <img
+            style={{ maxWidth: "30vh" }}
+            src={product.imgUrl}
+            className="card-img-top"
+            alt="Product Image"
+          />
+        </div>
+        <div className="card-body">
+          <h5 className="card-title">{product.name}</h5>
+          <div className="d-flex justify-content-center mb-4 mt-2 fw-light">
+            <span className="card-text d-flex align-items-center text-center">
+              ₺{product.price}
+            </span>
+            <div className="mx-3 text-secondary border border-end"></div>
+            <span className="card-text">Stokta</span>
+          </div>
+          <div className="mb-3">
+            <div className="row">
+              <div className="col-4 d-flex justify-content-center align-items-center px-1">
+                <input
+                  ref={amountRef}
+                  type="number"
+                  className="form-control text-center"
+                  defaultValue={1}
+                  placeholder="Adet girin"
+                  style={{ width: "100%", height: "100%" }}
+                />
               </div>
-            </div>
-            <div className="col-md-3 d-flex flex-column align-items-center justify-content-center p-3">
-              <label> Adet: </label>
-              <input
-                ref={amountRef}
-                type="number"
-                className="form-control mb-2"
-                defaultValue={1}
-                placeholder="Adet girin"
-                style={{ width: "50%" }}
-              />
-              <button onClick={makeOrder} className="btn btn-success">
-                Sipariş ver{" "}
-                {loading ? (
-                  <Spinner color={"white"} size={"spinner-border-sm"} />
-                ) : null}
-              </button>
-              {user.role == "admin" ? (
+              <div className="col justify-content-center align-items-center m-0">
                 <button
-                  onClick={() => {
-                    const confirm = window.confirm(
-                      product.name + " ürününü silmek siliyorsun"
-                    );
-                    if (confirm) deleteProduct();
-                  }}
-                  className="btn btn-danger mt-2"
+                  onClick={makeOrder}
+                  className="btn btn-outline-secondary mb-2"
                 >
-                  Ürünü Sil{" "}
+                  <i class="bi bi-cart-plus"></i> Sepete Ekle{" "}
                   {loading ? (
                     <Spinner color={"white"} size={"spinner-border-sm"} />
                   ) : null}
                 </button>
-              ) : null}
+                <button onClick={makeOrder} className="btn btn-primary">
+                  <i class="bi bi-check2-square"></i> Hemen İste{" "}
+                  {loading ? (
+                    <Spinner color={"white"} size={"spinner-border-sm"} />
+                  ) : null}
+                </button>
+              </div>
             </div>
+          </div>
+
+          <div>
+            {user.role == "admin" ? (
+              <a
+                onClick={() => {
+                  const confirm = window.confirm(
+                    product.name + " ürününü silmek istiyor musunuz?"
+                  );
+                  if (confirm) deleteProduct();
+                }}
+                className="float-end text-secondary text-decoration-none mt-2 fw-light"
+              >
+                Ürünü Sil{" "}
+                {loading ? (
+                  <Spinner color={"white"} size={"spinner-border-sm"} />
+                ) : null}
+              </a>
+            ) : null}
           </div>
         </div>
       </div>
