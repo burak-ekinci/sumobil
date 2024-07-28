@@ -6,8 +6,10 @@ const setProduct = async (req, res) => {
     const newProduct = new Product({
         name: req.body.name,
         imgUrl: req.body.imgUrl,
-        price: req.body.price
+        price: req.body.price,
+        stock: req.body.stock
     })
+    console.log(newProduct)
    await newProduct.save()
     .then(_ => {
         return res.json({valid: true, message: "Ürün başarıyla eklendi"})

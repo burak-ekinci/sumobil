@@ -20,6 +20,7 @@ const Product = ({ product }) => {
       }
     };
     checkLogin();
+    console.log(product);
   });
 
   const token = localStorage.getItem("user");
@@ -81,62 +82,109 @@ const Product = ({ product }) => {
           />
         </div>
         <div className="card-body">
-          <h5 className="card-title">{product.name}</h5>
+          <h5 className="card-title mt-2 fw-normal">{product.name}</h5>
           <div className="d-flex justify-content-center mb-4 mt-2 fw-light">
-            <span className="card-text d-flex align-items-center text-center">
-              ₺{product.price}
+            <span className="card-text d-flex align-items-center text-center fw-normal">
+              {product.price} ₺
             </span>
-            <div className="mx-3 text-secondary border border-end"></div>
-            <span className="card-text">Stokta</span>
+            <div className="mx-3 border border-end"></div>
+            <span className="card-text  text-success">
+              <i className="bi bi-check2-circle"></i> Stokta
+            </span>
           </div>
 
-          <div className="d-flex flex-row gap-2 justify-content-center align-items-center pb-2">
-            <div className="d-flex flex-column col-4 gap-2 justify-content-center align-items-center">
-              <i
-                onClick={() => {
-                  let amount = parseInt(amountRef.current.value);
-                  amount += 1;
-                  amountRef.current.value = amount;
-                }}
-                className="bi bi-chevron-up"
-              ></i>
-              <input
-                ref={amountRef}
-                type="number"
-                className="form-control text-center"
-                defaultValue={parseInt(1)}
-                placeholder="Adet girin"
-                style={{ width: "50%", height: "100%" }}
-              />
-              <i
-                onClick={() => {
-                  let amount = parseInt(amountRef.current.value);
-                  amount -= 1;
-                  if (amount < 1) {
-                    amountRef.current.value = 1;
-                    return;
-                  }
-                  amountRef.current.value = amount;
-                }}
-                className="bi bi-chevron-down"
-              ></i>
-            </div>
+          {user.role == "user" ? (
+            <div className="d-flex flex-row gap-2 justify-content-center align-items-center pb-2">
+              <div className="d-flex flex-column col-4 gap-2 justify-content-center align-items-center">
+                <i
+                  onClick={() => {
+                    let amount = parseInt(amountRef.current.value);
+                    amount += 1;
+                    amountRef.current.value = amount;
+                  }}
+                  className="bi bi-chevron-up"
+                ></i>
+                <input
+                  ref={amountRef}
+                  type="number"
+                  className="form-control text-center"
+                  defaultValue={parseInt(1)}
+                  placeholder="Adet girin"
+                  style={{ width: "50%", height: "100%" }}
+                />
+                <i
+                  onClick={() => {
+                    let amount = parseInt(amountRef.current.value);
+                    amount -= 1;
+                    if (amount < 1) {
+                      amountRef.current.value = 1;
+                      return;
+                    }
+                    amountRef.current.value = amount;
+                  }}
+                  className="bi bi-chevron-down"
+                ></i>
+              </div>
 
-            <div className="d-flex flex-column gap-2 justify-content-center align-items-center">
-              <button onClick={makeOrder} className="btn btn-outline-secondary">
-                <i className="bi bi-cart-plus"></i> Sepete Ekle{" "}
-                {loading ? (
-                  <Spinner color={"white"} size={"spinner-border-sm"} />
-                ) : null}
-              </button>
-              <button onClick={makeOrder} className="btn btn-primary">
-                <i className="bi bi-check2-square"></i> Hemen İste{" "}
-                {loading ? (
-                  <Spinner color={"white"} size={"spinner-border-sm"} />
-                ) : null}
-              </button>
+              <div className="d-flex flex-column gap-2 justify-content-center align-items-center">
+                <button
+                  onClick={makeOrder}
+                  className="btn btn-outline-secondary"
+                >
+                  <i className="bi bi-cart-plus"></i> Sepete Ekle{" "}
+                  {loading ? (
+                    <Spinner color={"white"} size={"spinner-border-sm"} />
+                  ) : null}
+                </button>
+                <button onClick={makeOrder} className="btn btn-primary">
+                  <i className="bi bi-check2-square"></i> Hemen İste{" "}
+                  {loading ? (
+                    <Spinner color={"white"} size={"spinner-border-sm"} />
+                  ) : null}
+                </button>
+              </div>
             </div>
-          </div>
+          ) : null}
+
+          {user.role == "admin" ? (
+            <div className="d-flex flex-row gap-2 justify-content-center align-items-center pb-2">
+              <div className="d-flex flex-column col-4 gap-2 justify-content-center align-items-center">
+                <input
+                  ref={amountRef}
+                  type="number"
+                  className="form-control text-center"
+                  defaultValue={parseInt(1)}
+                  placeholder="Adet girin"
+                  style={{ width: "50%", height: "100%" }}
+                />
+                <input
+                  // ref={amountRef}
+                  type="number"
+                  className="form-control text-center"
+                  defaultValue={product.stock}
+                  style={{ width: "50%", height: "100%" }}
+                />
+              </div>
+
+              <div className="d-flex flex-column gap-2 justify-content-center align-items-center">
+                <button
+                  onClick={makeOrder}
+                  className="btn btn-outline-secondary"
+                >
+                  <i className="bi bi-tags"></i> Fiyat Güncelle{" "}
+                  {loading ? (
+                    <Spinner color={"white"} size={"spinner-border-sm"} />
+                  ) : null}
+                </button>
+                <button onClick={makeOrder} className="btn btn-primary">
+                  <i className="bi bi-arrow-repeat"></i> Stok Güncelle{" "}
+                  {loading ? (
+                    <Spinner color={"white"} size={"spinner-border-sm"} />
+                  ) : null}
+                </button>
+              </div>
+            </div>
+          ) : null}
 
           <div>
             {user.role == "admin" ? (

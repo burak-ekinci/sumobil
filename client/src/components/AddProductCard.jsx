@@ -11,12 +11,14 @@ const AddProductCard = () => {
   const nameRef = useRef(null);
   const urlRef = useRef(null);
   const priceRef = useRef(null);
+  const stockRef = useRef(null);
 
   const addProduct = async () => {
     const product = {
       name: nameRef.current.value,
       imgUrl: urlRef.current.value,
       price: priceRef.current.value,
+      stock: stockRef.current.value,
     };
     try {
       const response = await axios.post(
@@ -73,6 +75,16 @@ const AddProductCard = () => {
               <label>Fiyat</label>
               <input
                 ref={priceRef}
+                type="text"
+                className="form-control"
+                id="price"
+                placeholder="Fiyat girin"
+              />
+            </div>
+            <div className="form-group mt-2">
+              <label>Stok</label>
+              <input
+                ref={stockRef}
                 type="text"
                 className="form-control"
                 id="price"

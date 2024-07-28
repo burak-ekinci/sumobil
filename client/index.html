@@ -10,15 +10,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Su Mobil</title>
     <style>
-      .fullscreen-div {
-        height: 100vh; /* Ekran yüksekliğinin %100'ü */
-        display: flex;
-        justify-content: center; /* Yatayda ortalar */
-        align-items: center; /* Dikeyde ortalar */
-        background-image: url("/hero-bg1.png");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+      /* Chrome, Safari, Edge, Opera Hide up down button on type number inputs*/
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
       }
     </style>
   </head>
