@@ -8,7 +8,7 @@ import Spinner from "./Spinner";
 const Product = ({ product }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const amountRef = useRef();
+  let amountRef = useRef(1);
 
   useEffect(() => {
     const checkLogin = () => {
@@ -89,35 +89,52 @@ const Product = ({ product }) => {
             <div className="mx-3 text-secondary border border-end"></div>
             <span className="card-text">Stokta</span>
           </div>
-          <div className="mb-3">
-            <div className="row">
-              <div className="col-5 d-flex justify-content-center align-items-center px-1">
-                <input
-                  ref={amountRef}
-                  type="number"
-                  className="form-control text-center ms-5"
-                  defaultValue={1}
-                  placeholder="Adet girin"
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
-              <div style={{}} className="col-6 text-start">
-                <button
-                  onClick={makeOrder}
-                  className="btn btn-outline-secondary mb-2"
-                >
-                  <i class="bi bi-cart-plus"></i> Sepete Ekle{" "}
-                  {loading ? (
-                    <Spinner color={"white"} size={"spinner-border-sm"} />
-                  ) : null}
-                </button>
-                <button onClick={makeOrder} className="btn btn-primary">
-                  <i class="bi bi-check2-square"></i> Hemen İste{" "}
-                  {loading ? (
-                    <Spinner color={"white"} size={"spinner-border-sm"} />
-                  ) : null}
-                </button>
-              </div>
+
+          <div className="d-flex flex-row gap-2 justify-content-center align-items-center pb-2">
+            <div className="d-flex flex-column col-4 gap-2 justify-content-center align-items-center">
+              <i
+                onClick={() => {
+                  let amount = parseInt(amountRef.current.value);
+                  amount += 1;
+                  amountRef.current.value = amount;
+                }}
+                className="bi bi-chevron-up"
+              ></i>
+              <input
+                ref={amountRef}
+                type="number"
+                className="form-control text-center"
+                defaultValue={parseInt(1)}
+                placeholder="Adet girin"
+                style={{ width: "50%", height: "100%" }}
+              />
+              <i
+                onClick={() => {
+                  let amount = parseInt(amountRef.current.value);
+                  amount -= 1;
+                  if (amount < 1) {
+                    amountRef.current.value = 1;
+                    return;
+                  }
+                  amountRef.current.value = amount;
+                }}
+                className="bi bi-chevron-down"
+              ></i>
+            </div>
+
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center">
+              <button onClick={makeOrder} className="btn btn-outline-secondary">
+                <i className="bi bi-cart-plus"></i> Sepete Ekle{" "}
+                {loading ? (
+                  <Spinner color={"white"} size={"spinner-border-sm"} />
+                ) : null}
+              </button>
+              <button onClick={makeOrder} className="btn btn-primary">
+                <i className="bi bi-check2-square"></i> Hemen İste{" "}
+                {loading ? (
+                  <Spinner color={"white"} size={"spinner-border-sm"} />
+                ) : null}
+              </button>
             </div>
           </div>
 
