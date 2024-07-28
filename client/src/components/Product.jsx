@@ -153,7 +153,7 @@ const Product = ({ product }) => {
                   ref={amountRef}
                   type="number"
                   className="form-control text-center"
-                  defaultValue={parseInt(1)}
+                  defaultValue={product.price}
                   placeholder="Adet girin"
                   style={{ width: "50%", height: "100%" }}
                 />
