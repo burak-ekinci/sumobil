@@ -9,7 +9,7 @@ const setProduct = async (req, res) => {
         price: req.body.price,
         stock: req.body.stock
     })
-    console.log(newProduct)
+    console.log(req.body)
    await newProduct.save()
     .then(_ => {
         return res.json({valid: true, message: "Ürün başarıyla eklendi"})
