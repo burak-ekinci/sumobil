@@ -91,17 +91,17 @@ const Product = ({ product }) => {
           </div>
           <div className="mb-3">
             <div className="row">
-              <div className="col-4 d-flex justify-content-center align-items-center px-1">
+              <div className="col-5 d-flex justify-content-center align-items-center px-1">
                 <input
                   ref={amountRef}
                   type="number"
-                  className="form-control text-center"
+                  className="form-control text-center ms-5"
                   defaultValue={1}
                   placeholder="Adet girin"
                   style={{ width: "100%", height: "100%" }}
                 />
               </div>
-              <div className="col justify-content-center align-items-center m-0">
+              <div style={{}} className="col-6 text-start">
                 <button
                   onClick={makeOrder}
                   className="btn btn-outline-secondary mb-2"
