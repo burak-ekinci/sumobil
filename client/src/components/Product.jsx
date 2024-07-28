@@ -147,26 +147,26 @@ const Product = ({ product }) => {
           ) : null}
 
           {user.role == "admin" ? (
-            <div className="d-flex flex-row gap-2 justify-content-center align-items-center pb-2">
-              <div className="d-flex flex-column col-4 gap-2 justify-content-center align-items-center">
+            <div className="d-flex gap-2 align-items-center pb-2">
+              <div className="d-flex flex-column gap-2 align-items-end">
                 <input
                   ref={amountRef}
                   type="number"
                   className="form-control text-center"
                   defaultValue={product.price}
                   placeholder="Adet girin"
-                  style={{ width: "50%", height: "100%" }}
+                  style={{ width: "70%", height: "100%" }}
                 />
                 <input
                   // ref={amountRef}
                   type="number"
                   className="form-control text-center"
                   defaultValue={product.stock}
-                  style={{ width: "50%", height: "100%" }}
+                  style={{ width: "70%", height: "100%" }}
                 />
               </div>
 
-              <div className="d-flex flex-column gap-2 justify-content-center align-items-center">
+              <div className="d-flex flex-column col-7 gap-2 align-items-start">
                 <button
                   onClick={makeOrder}
                   className="btn btn-outline-secondary"

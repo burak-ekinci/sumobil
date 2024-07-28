@@ -102,7 +102,7 @@ function MainPageLayout({ children }) {
         </div>
       </nav>
 
-      <div className="container col-9 mt-5">
+      <div className="container col-11 mt-5">
         <div className="row"> {children}</div>
       </div>
     </>
