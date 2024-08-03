@@ -14,8 +14,8 @@ import Null from "./components/Null";
 import "react-toastify/dist/ReactToastify.css";
 import AdminLayout from "./components/AdminLayout";
 import AddProductCard from "./components/AddProductCard";
-import Product from "./components/Product";
 import OrderCard from "./components/OrderCard";
+import { CartProvider } from "./contexts/CartContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -70,7 +70,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <CartProvider>
+      <RouterProvider router={router} />
+    </CartProvider>
+
     <ToastContainer />
   </React.StrictMode>
 );

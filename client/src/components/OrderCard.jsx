@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import Order from "./Order";
 import { jwtDecode } from "jwt-decode";
 import io from "socket.io-client";
+import Spinner from "./Spinner";
 
 function OrderCard() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const socket = io(import.meta.env.VITE_KEY_DB, {
@@ -31,38 +33,50 @@ function OrderCard() {
 
   useEffect(() => {
     const getOrders = async () => {
-      // user defining
-      const token = localStorage.getItem("user");
-      const user = jwtDecode(token);
-      if (user.role == "admin") {
-        try {
-          const response = await axios.get(
+      setLoading(true);
+      try {
+        // user defining
+        const token = localStorage.getItem("user");
+        const user = jwtDecode(token);
+        let response;
+
+        if (user.role === "admin") {
+          response = await axios.get(
             import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/getorder"
           );
-          setOrders(response.data.orders);
-        } catch (error) {
-          toast.error(error.message);
-        }
-      } else if (user.role == "user") {
-        try {
-          const response = await axios.post(
+        } else if (user.role === "user") {
+          response = await axios.post(
             import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/getmyorder",
             { phone: user.phone }
           );
-          if (response.data.orders != null) {
-            setOrders(response.data.orders);
-          } else {
-            setOrders([]);
-          }
-        } catch (error) {
-          toast.error(error.message);
+        } else {
+          throw new Error("Authenticated error!");
         }
-      } else {
-        toast.error("Authenticated error!");
+
+        if (response.data.orders) {
+          setOrders(response.data.orders);
+        } else {
+          setOrders([]);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setLoading(false);
       }
     };
+
     getOrders();
-  }, [orders]);
+  }, []);
+
+  if (loading) {
+    return (
+      <>
+        <div className="d-flex justify-content-center">
+          <Spinner color={"primary"} size={"spinner-border-lg"} />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

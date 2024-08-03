@@ -27,6 +27,7 @@ const Order = ({ order }) => {
           }
         );
         setLoading(false);
+        navigate(0);
       } catch (error) {
         setLoading(false);
         toast.error(response.data.error);
@@ -73,32 +74,28 @@ const Order = ({ order }) => {
               </div>
             </div>
             <div className="col-md-3 d-flex flex-column align-items-center justify-content-center p-3">
-              {/* <button onClick={deleteOrder} className="btn btn-secondary mt-2">
-                Sipariş İptal
-              </button> */}
-
-              {user.role == "admin" ? (
-                <button
-                  onClick={() => {
-                    deleteOrder();
-                  }}
-                  className="btn btn-success mt-2"
-                >
-                  BİTİR{" "}
-                  {loading ? (
-                    <Spinner color={"white"} size={"spinner-border-sm"} />
-                  ) : null}
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    deleteOrder();
-                  }}
-                  className="btn btn-success mt-2"
-                >
-                  İPTAL
-                </button>
-              )}
+              <button
+                onClick={() => {
+                  deleteOrder();
+                }}
+                className="btn btn-success mt-2"
+              >
+                {user.role == "admin" ? (
+                  <div>
+                    BİTİR{" "}
+                    {loading ? (
+                      <Spinner color={"white"} size={"spinner-border-sm"} />
+                    ) : null}
+                  </div>
+                ) : (
+                  <div>
+                    İPTAL{" "}
+                    {loading ? (
+                      <Spinner color={"white"} size={"spinner-border-sm"} />
+                    ) : null}
+                  </div>
+                )}
+              </button>
             </div>
           </div>
         </div>

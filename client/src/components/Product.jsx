@@ -2,12 +2,23 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Spinner from "./Spinner";
+import { updatePrice, updateStock } from "../hooks/updateProduct.js";
+import { addCart, clearCart } from "../hooks/cart.js";
+import { CartContext } from "../contexts/CartContext.jsx";
 
 const Product = ({ product }) => {
-  const [loading, setLoading] = useState(false);
+  const { cart, setCart } = useContext(CartContext);
+
+  const [loadingNow, setLoadingNow] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingCart, setLoadingCart] = useState(false);
+  const [loadingPrice, setLoadingPrice] = useState(false);
+  const [loadingStock, setLoadingStock] = useState(false);
   const navigate = useNavigate();
+  let priceRef = useRef(1);
+  let stockRef = useRef(1);
   let amountRef = useRef(1);
 
   useEffect(() => {
@@ -20,14 +31,13 @@ const Product = ({ product }) => {
       }
     };
     checkLogin();
-    console.log(product);
   });
 
   const token = localStorage.getItem("user");
   const user = jwtDecode(token);
 
   const deleteProduct = async () => {
-    setLoading(true);
+    setLoadingDelete(true);
     try {
       await axios.post(
         import.meta.env.VITE_KEY_CONNECTION_STRING + "/product/deleteproduct",
@@ -35,16 +45,16 @@ const Product = ({ product }) => {
           _id: product._id,
         }
       );
-      setLoading(false);
+      setLoadingDelete(false);
       navigate(0);
     } catch (error) {
-      setLoading(false);
+      setLoadingDelete(false);
       toast.error(response.data.error);
     }
   };
 
   const makeOrder = async () => {
-    setLoading(true);
+    setLoadingNow(true);
     try {
       const orderTemplate = {
         user: user.id,
@@ -57,7 +67,7 @@ const Product = ({ product }) => {
         import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/setorder",
         orderTemplate
       );
-      setLoading(false);
+      setLoadingNow(false);
       toast.success(
         response.data.message +
           amountRef.current.value +
@@ -65,14 +75,152 @@ const Product = ({ product }) => {
           product.name
       );
     } catch (error) {
-      setLoading(false);
+      setLoadingNow(false);
       toast.error(error.message);
+    }
+  };
+
+  const cartOrder = async () => {
+    const token = localStorage.getItem("user");
+    const user = jwtDecode(token);
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (cart.length === 0) {
+      toast.error("Sepetiniz boş!");
+      return;
+    }
+
+    let allOrdersSuccess = true;
+
+    for (const product of cart) {
+      try {
+        const orderTemplate = {
+          user: user.id,
+          product: product._id,
+
+          amount: product.amount,
+          totalPrice: product.amount * product.price,
+          status: "Beklemede",
+        };
+        const response = await axios.post(
+          import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/setorder",
+          orderTemplate
+        );
+        toast.success(
+          response.data.message + product.amount + " tane " + product.name
+        );
+      } catch (error) {
+        allOrdersSuccess = false;
+        toast.error(
+          product.name +
+            " ürünü için sipariş oluşturulurken hata oluştu: " +
+            error.message
+        );
+      }
+    }
+
+    if (allOrdersSuccess) {
+      localStorage.removeItem("cart");
+      toast.success("Tüm siparişler başarıyla oluşturuldu!");
+    } else {
+      toast.error("Bazı ürünler için sipariş oluşturulamadı.");
+    }
+  };
+
+  const addToCart = () => {
+    try {
+      setLoadingCart(true);
+      const orderTemplate = {
+        user: user.id,
+        product: product,
+        amount: amountRef.current.value,
+        totalPrice: amountRef.current.value * product.price,
+        status: "Beklemede",
+      };
+      setCart([orderTemplate, ...cart]);
+      toast.info("Ürün sepete eklendi:", product.name);
+      setLoadingCart(false);
+    } catch (error) {
+      toast.error(error.message);
+      setLoadingCart(false);
+    }
+  };
+
+  const clearAllCart = async () => {
+    try {
+      setLoadingCart(true);
+      await clearCart(product);
+      toast.warning("Sepet temizlendi");
+      setLoadingCart(false);
+    } catch (error) {
+      toast.error(error.message);
+      setLoadingCart(false);
+    }
+  };
+
+  const updatePrices = async () => {
+    if (priceRef.current.value < 0) {
+      toast.error("Lütfen geçerli bir fiyat girin");
+      return;
+      -1;
+    }
+    try {
+      setLoadingPrice(true);
+      const updateProductObj = {
+        _id: product._id,
+        price: priceRef.current.value,
+      };
+      await updatePrice(updateProductObj);
+      setLoadingPrice(false);
+    } catch (error) {
+      toast.error(error.message);
+      setLoadingPrice(false);
+    }
+  };
+
+  const updateStocks = async () => {
+    if (stockRef.current.value < 0) {
+      toast.error("Lütfen geçerli bir stok sayısı girin");
+      return;
+    }
+    try {
+      setLoadingStock(true);
+      const updateProductObj = {
+        _id: product._id,
+        stock: stockRef.current.value,
+      };
+      await updateStock(updateProductObj);
+      setLoadingStock(false);
+    } catch (error) {
+      toast.error(error.message);
+      setLoadingStock(false);
     }
   };
 
   return (
     <div className="col-sm-12 col-md-6 col-lg-4 mb-3">
       <div className="card text-center">
+        <div>
+          {user.role == "admin" ? (
+            loadingDelete ? (
+              <Spinner color={"white"} size={"spinner-border-sm"} />
+            ) : (
+              <a
+                onClick={() => {
+                  setLoadingDelete(true);
+                  const confirm = window.confirm(
+                    product.name + " ürününü silmek istiyor musunuz?"
+                  );
+                  if (confirm) deleteProduct();
+                  setLoadingDelete(false);
+                }}
+                className="float-end btn btn-outline-secondary text-decoration-none m-2"
+              >
+                <i className="bi bi-x-lg"></i>{" "}
+              </a>
+            )
+          ) : null}
+        </div>
         <div className="d-flex justify-content-center mt-3">
           <img
             style={{ maxWidth: "30vh" }}
@@ -88,8 +236,23 @@ const Product = ({ product }) => {
               {product.price} ₺
             </span>
             <div className="mx-3 border border-end"></div>
-            <span className="card-text  text-success">
-              <i className="bi bi-check2-circle"></i> Stokta
+            <span className="card-text">
+              {product.stock === 0 ? (
+                <span className="text-danger">
+                  {" "}
+                  <i className="bi bi-x-circle"></i> Tükendi
+                </span>
+              ) : product.stock <= 10 ? (
+                <span className="text-warning">
+                  {" "}
+                  <i className="bi bi-exclamation-circle"></i> Tükeniyor
+                </span>
+              ) : (
+                <span className="text-success">
+                  {" "}
+                  <i className="bi bi-check2-circle"></i> Stok
+                </span>
+              )}
             </span>
           </div>
 
@@ -126,19 +289,25 @@ const Product = ({ product }) => {
                 ></i>
               </div>
 
+              {/* USER ROLE ACCESS */}
               <div className="d-flex flex-column gap-2 justify-content-center align-items-center">
                 <button
-                  onClick={makeOrder}
+                  onClick={addToCart}
                   className="btn btn-outline-secondary"
+                  disabled={product.stock && product.price ? false : true}
                 >
                   <i className="bi bi-cart-plus"></i> Sepete Ekle{" "}
-                  {loading ? (
+                  {loadingCart ? (
                     <Spinner color={"white"} size={"spinner-border-sm"} />
                   ) : null}
                 </button>
-                <button onClick={makeOrder} className="btn btn-primary">
+                <button
+                  disabled={product.stock && product.price ? false : true}
+                  onClick={makeOrder}
+                  className="btn btn-primary"
+                >
                   <i className="bi bi-check2-square"></i> Hemen İste{" "}
-                  {loading ? (
+                  {loadingNow ? (
                     <Spinner color={"white"} size={"spinner-border-sm"} />
                   ) : null}
                 </button>
@@ -146,11 +315,12 @@ const Product = ({ product }) => {
             </div>
           ) : null}
 
+          {/* ADMIN ROLE ACCESS */}
           {user.role == "admin" ? (
             <div className="d-flex gap-2 align-items-center pb-2">
               <div className="d-flex flex-column gap-2 align-items-end">
                 <input
-                  ref={amountRef}
+                  ref={priceRef}
                   type="number"
                   className="form-control text-center"
                   defaultValue={product.price}
@@ -158,7 +328,7 @@ const Product = ({ product }) => {
                   style={{ width: "70%", height: "100%" }}
                 />
                 <input
-                  // ref={amountRef}
+                  ref={stockRef}
                   type="number"
                   className="form-control text-center"
                   defaultValue={product.stock}
@@ -168,42 +338,23 @@ const Product = ({ product }) => {
 
               <div className="d-flex flex-column col-7 gap-2 align-items-start">
                 <button
-                  onClick={makeOrder}
+                  onClick={updatePrices}
                   className="btn btn-outline-secondary"
                 >
                   <i className="bi bi-tags"></i> Fiyat Güncelle{" "}
-                  {loading ? (
+                  {loadingPrice ? (
                     <Spinner color={"white"} size={"spinner-border-sm"} />
                   ) : null}
                 </button>
-                <button onClick={makeOrder} className="btn btn-primary">
+                <button onClick={updateStocks} className="btn btn-primary">
                   <i className="bi bi-arrow-repeat"></i> Stok Güncelle{" "}
-                  {loading ? (
+                  {loadingStock ? (
                     <Spinner color={"white"} size={"spinner-border-sm"} />
                   ) : null}
                 </button>
               </div>
             </div>
           ) : null}
-
-          <div>
-            {user.role == "admin" ? (
-              <a
-                onClick={() => {
-                  const confirm = window.confirm(
-                    product.name + " ürününü silmek istiyor musunuz?"
-                  );
-                  if (confirm) deleteProduct();
-                }}
-                className="float-end text-secondary text-decoration-none mt-2 fw-light"
-              >
-                Ürünü Sil{" "}
-                {loading ? (
-                  <Spinner color={"white"} size={"spinner-border-sm"} />
-                ) : null}
-              </a>
-            ) : null}
-          </div>
         </div>
       </div>
     </div>
