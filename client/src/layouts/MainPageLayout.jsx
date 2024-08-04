@@ -3,15 +3,18 @@ import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import Order from "../components/Order";
 import Cart from "../components/Cart";
-import { clearCart } from "../hooks/cart";
+import { clearCart, orderAllCart } from "../hooks/cart";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../contexts/CartContext";
 import CartCard from "../components/CartCard";
+import Spinner from "../components/Spinner";
+import Footer from "../components/Footer";
 
 function MainPageLayout({ children }) {
   const navigate = useNavigate();
   const { cart, setCart } = useContext(CartContext);
   const [loadingCart, setLoadingCart] = useState(false);
+  const [loadingCartOrder, setLoadingCartOrder] = useState(false);
 
   useEffect(() => {
     const checkLogin = () => {
@@ -51,9 +54,16 @@ function MainPageLayout({ children }) {
     }
   };
 
+  const orderCart = async () => {
+    setLoadingCartOrder(true);
+    await orderAllCart();
+    setCart([]);
+    setLoadingCartOrder(false);
+  };
+
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg border-bottom border-primary border-opacity-50  rounded-5 p-2">
         <a className="navbar-brand ms-2" href="/">
           <img style={{ maxWidth: 100 }} src="/logo1.png" alt="" />
         </a>
@@ -88,21 +98,6 @@ function MainPageLayout({ children }) {
                 Siparişlerim
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to={"/sellerinfo"} className="nav-link" href="#">
-                Satıcı bilgileri
-              </Link>
-            </li>
-            <li className="nav-item">
-              <button
-                onClick={() => {
-                  console.log(cart);
-                }}
-                className="btn btn-success"
-              >
-                CART
-              </button>
-            </li>
             {user.role == "admin" ? (
               <li className="nav-item">
                 <Link to={"/admin/setproduct"} className="nav-link">
@@ -115,17 +110,18 @@ function MainPageLayout({ children }) {
             onClick={() => {
               logout();
             }}
-            className="btn btn-outline-danger me-3"
+            className="text-secondary link-underline link-underline-opacity-0 link-underline-opacity-25-hover me-3"
             type="button"
           >
-            Çıkış Yap
+            Çıkış
           </a>
         </div>
       </nav>
 
-      <div className="container col-11 mt-5">
+      <div className="container col-11 mt-4">
         <div className="row">{children}</div>
       </div>
+
       {user.role != "admin" ? (
         <>
           {" "}
@@ -198,13 +194,17 @@ function MainPageLayout({ children }) {
                   </button>
                   <button
                     onClick={() => {
-                      // Share my campaign
+                      //  Order cart func
+                      orderCart();
                     }}
                     type="button"
                     data-bs-dismiss="modal"
                     className="btn button btn-primary"
                   >
-                    <i className="bi bi-cart-check"></i> Siparişi Tamamla
+                    <i className="bi bi-cart-check"></i> Siparişi Tamamla{" "}
+                    {loadingCartOrder ? (
+                      <Spinner color={"white"} size={"spinner-border-sm"} />
+                    ) : null}
                   </button>
                 </div>
               </div>
@@ -212,6 +212,8 @@ function MainPageLayout({ children }) {
           </div>
         </>
       ) : null}
+
+      <Footer />
     </>
   );
 }

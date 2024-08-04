@@ -172,17 +172,15 @@ const SignUpPage = () => {
                       <Spinner color={"white"} size={"spinner-border-sm"} />
                     ) : null}
                   </button>
-                </form>
-                <div className="container d-flex justify-content-center align-items-center mt-3 ">
                   <Link
                     to={"/login"}
                     type="button"
-                    className="btn btn-sm btn-outline-warning"
+                    className="btn btn-outline-primary float-end"
                   >
                     {" "}
                     Zaten hesabın var mı? Giriş yap.
                   </Link>
-                </div>
+                </form>
               </div>
             </div>
           </div>

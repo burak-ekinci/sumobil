@@ -16,7 +16,7 @@ const Cart = ({ order }) => {
     setCart(cart.filter((item) => item.product._id !== productId));
     removeFromCart(order.product._id);
     setLoadingCart(false);
-    toast.info("Ürün iptal edildi: " + order.product.name);
+    toast.info("Ürün sepetten çıkarıldı: " + order.product.name);
   };
   // user defining
   const token = localStorage.getItem("user");

@@ -64,9 +64,12 @@ const Product = ({ product }) => {
         status: "Beklemede",
       };
       const response = await axios.post(
-        import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/setorder",
+        "http://localhost:3000" + "/order/setorder",
         orderTemplate
       );
+      if (response.data.error) {
+        throw new Error(response.data.error);
+      }
       setLoadingNow(false);
       toast.success(
         response.data.message +
@@ -77,53 +80,6 @@ const Product = ({ product }) => {
     } catch (error) {
       setLoadingNow(false);
       toast.error(error.message);
-    }
-  };
-
-  const cartOrder = async () => {
-    const token = localStorage.getItem("user");
-    const user = jwtDecode(token);
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    if (cart.length === 0) {
-      toast.error("Sepetiniz boş!");
-      return;
-    }
-
-    let allOrdersSuccess = true;
-
-    for (const product of cart) {
-      try {
-        const orderTemplate = {
-          user: user.id,
-          product: product._id,
-
-          amount: product.amount,
-          totalPrice: product.amount * product.price,
-          status: "Beklemede",
-        };
-        const response = await axios.post(
-          import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/setorder",
-          orderTemplate
-        );
-        toast.success(
-          response.data.message + product.amount + " tane " + product.name
-        );
-      } catch (error) {
-        allOrdersSuccess = false;
-        toast.error(
-          product.name +
-            " ürünü için sipariş oluşturulurken hata oluştu: " +
-            error.message
-        );
-      }
-    }
-
-    if (allOrdersSuccess) {
-      localStorage.removeItem("cart");
-      toast.success("Tüm siparişler başarıyla oluşturuldu!");
-    } else {
-      toast.error("Bazı ürünler için sipariş oluşturulamadı.");
     }
   };
 
@@ -198,7 +154,7 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div className="col-sm-12 col-md-6 col-lg-4 mb-3">
+    <div className="col-sm-12 col-md-6 col-lg-4 mb-4">
       <div className="card text-center">
         <div>
           {user.role == "admin" ? (
@@ -243,7 +199,7 @@ const Product = ({ product }) => {
                   <i className="bi bi-x-circle"></i> Tükendi
                 </span>
               ) : product.stock <= 10 ? (
-                <span className="text-warning">
+                <span className="text-info">
                   {" "}
                   <i className="bi bi-exclamation-circle"></i> Tükeniyor
                 </span>

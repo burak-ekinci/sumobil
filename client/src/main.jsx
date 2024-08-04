@@ -9,7 +9,6 @@ import SignUpPage from "./components/SignupPage";
 import Error from "./components/Error";
 import Home from "./components/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SellerInfo from "./components/SellerInfo";
 import Null from "./components/Null";
 import "react-toastify/dist/ReactToastify.css";
 import AdminLayout from "./components/AdminLayout";
@@ -46,11 +45,6 @@ const router = createBrowserRouter([
   {
     path: "/orders",
     element: <MainPageLayout children={<OrderCard />} />,
-    errorElement: <Error />,
-  },
-  {
-    path: "/sellerinfo",
-    element: <MainPageLayout children={<SellerInfo />} />,
     errorElement: <Error />,
   },
   {

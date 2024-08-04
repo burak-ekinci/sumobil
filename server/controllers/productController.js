@@ -9,7 +9,6 @@ const setProduct = async (req, res) => {
         price: req.body.price,
         stock: req.body.stock
     })
-    console.log(req.body)
    await newProduct.save()
     .then(_ => {
         return res.json({valid: true, message: "Ürün başarıyla eklendi"})
@@ -46,7 +45,6 @@ const updateProductStock = async (req, res) => {
 
 const updateProductPrice = async (req, res) => {
     try {
-        console.log(req.body)
         await Product.findByIdAndUpdate(req.body.id, { $set: {price: req.body.price}}, {new: true})
         res.json({valid: true, message: "Ürün fiyatı başarıyla güncellendi"})
     } catch (error) {
