@@ -87,13 +87,7 @@ const LoginPage = () => {
                   <h1 className="card-title text-center text-primary fs-3 fw-bold">
                     GİRİŞ YAP
                   </h1>
-                  <button
-                    onClick={() => {
-                      console.log(value);
-                    }}
-                  >
-                    test
-                  </button>
+
                   <a className="navbar-brand" href="/">
                     <img
                       src="/logo1.png"

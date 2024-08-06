@@ -3,29 +3,37 @@ const Product = require("../models/productModel");
 const User = require("../models/userModel");
 
 const getOrder = async (req,res) => {
-  const orders = await Order.find();
-  const orderss = await Order.aggregate([
+ 
+  const orders = await Order.aggregate([
     {
       $sort: {
-        orderDate: -1 // sorting by short date
+        createdAt: -1 // sorting by creation date
       }
     },
     {
       $group: {
-        _id: "$userId",
+        _id: "$user.phone",
         orders: {
           $push: {
             _id: "$_id",
-            items: "$items",
+            user: {
+              fullName: "$user.fullName",
+              phone: "$user.phone",
+              address: "$user.address",
+              role: "$user.role"
+            },
+            product: "$product",
+            amount: "$amount",
             totalPrice: "$totalPrice",
-            orderDate: "$orderDate"
+            status: "$status",
+            orderDate: "$createdAt"
           }
         }
       }
     }
   ]);
   
-    return res.json({orders,orderss})
+    return res.json({orders})
 }
 
 const getMyOrder = async (req,res) => {
@@ -38,18 +46,26 @@ const getGroupedOrders = async (req, res) => {
     const orders = await Order.aggregate([
       {
         $sort: {
-          createdAt: -1 // sorting by short date
+          createdAt: -1 // sorting by creation date
         }
       },
       {
         $group: {
-          _id: "$user._id",
+          _id: "$user.phone",
           orders: {
             $push: {
               _id: "$_id",
-              items: "$",
+              user: {
+                fullName: "$user.fullName",
+                phone: "$user.phone",
+                address: "$user.address",
+                role: "$user.role"
+              },
+              product: "$product",
+              amount: "$amount",
               totalPrice: "$totalPrice",
-              orderDate: "$orderDate"
+              status: "$status",
+              orderDate: "$createdAt"
             }
           }
         }
@@ -58,9 +74,10 @@ const getGroupedOrders = async (req, res) => {
 
     res.json(orders);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error });
   }
 };
+
 
 const setOrder = async (req, res) => {
   try {

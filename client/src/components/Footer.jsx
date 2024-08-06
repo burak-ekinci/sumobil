@@ -16,17 +16,17 @@ const Footer = () => {
       <div className="d-flex flex-column gap-2 text-secondary justify-content-center align-items-center text-start">
         <ul className="list-group list-group-flush">
           <li className="list-group-item list-group-item-light">
-            <i class="bi bi-headset pe-2"></i>Gökhan Öztürk
+            <i className="bi bi-headset pe-2"></i>Gökhan Öztürk
           </li>
           <a
             href="tel:+905411239825"
             className="list-group-item  list-group-item-light float-start"
           >
-            <i class="bi bi-telephone-outbound pe-2"></i> 0541 123 9825
+            <i className="bi bi-telephone-outbound pe-2"></i> 0541 123 9825
           </a>
           <li className="list-group-item list-group-item-light">
-            <i class="bi bi-buildings pe-2"></i>İsmet Kaptan Mh. 1374 Sk. 14/603
-            Konak, İzmir
+            <i className="bi bi-buildings pe-2"></i>İsmet Kaptan Mh. 1374 Sk.
+            14/603 Konak, İzmir
           </li>
         </ul>
       </div>

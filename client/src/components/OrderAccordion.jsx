@@ -5,8 +5,9 @@ import Order from "./Order";
 import { jwtDecode } from "jwt-decode";
 import io from "socket.io-client";
 import Spinner from "./Spinner";
+import Accordion from "./Accordion";
 
-function OrderCard() {
+function OrderAccordion() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +47,7 @@ function OrderCard() {
           );
         } else if (user.role === "user") {
           response = await axios.post(
-            import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/getmyorder",
+            "http://localhost:3000" + "/order/getmyorder",
             { phone: user.phone }
           );
         } else {
@@ -55,7 +56,6 @@ function OrderCard() {
 
         if (response.data.orders) {
           setOrders(response.data.orders);
-          console.log(response.data.orderss);
         } else {
           setOrders([]);
         }
@@ -78,16 +78,25 @@ function OrderCard() {
       </>
     );
   }
+  if (orders.length == 0) {
+    return (
+      <div className="alert alert-secondary" role="alert">
+        Hiç sipariş yok
+      </div>
+    );
+  }
 
   return (
     <>
-      {orders == [] ? (
-        <div className="container bg-warning">Hiç siparişin yok!</div>
-      ) : (
-        orders.map((order) => <Order key={order._id} order={order} />)
-      )}
+      {orders.map((order, index) => (
+        <Accordion
+          key={index}
+          children={order.orders}
+          username={order.orders[0].user.fullName}
+        />
+      ))}
     </>
   );
 }
 
-export default OrderCard;
+export default OrderAccordion;

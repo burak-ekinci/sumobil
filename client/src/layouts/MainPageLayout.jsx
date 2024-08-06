@@ -94,6 +94,15 @@ function MainPageLayout({ children }) {
               </Link>
             </li>
             <li className="nav-item">
+              <button
+                onClick={() => {
+                  console.log(cart);
+                }}
+              >
+                test
+              </button>
+            </li>
+            <li className="nav-item">
               <Link to={"/orders"} className="nav-link" href="#">
                 Siparişlerim
               </Link>

@@ -16,6 +16,8 @@ import AddProductCard from "./components/AddProductCard";
 import OrderCard from "./components/OrderCard";
 import { CartProvider } from "./contexts/CartContext.jsx";
 import "react-phone-number-input/style.css";
+import Accordion from "./components/Accordion.jsx";
+import OrderAccordion from "./components/OrderAccordion.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +47,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/orders",
-    element: <MainPageLayout children={<OrderCard />} />,
+    element: <MainPageLayout children={<OrderAccordion />} />,
     errorElement: <Error />,
   },
   {

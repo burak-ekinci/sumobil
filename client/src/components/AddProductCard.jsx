@@ -39,7 +39,7 @@ const AddProductCard = () => {
   };
 
   return (
-    <div className="container card-center">
+    <div className="container card-center mb-3">
       <div className="card">
         <div className="card-header">Ürün Ekle</div>
         <div className="card-body">
@@ -50,7 +50,6 @@ const AddProductCard = () => {
             }}
           >
             <div className="form-group">
-              <label>Ürün Resmi</label>
               <input
                 ref={urlRef}
                 type="text"
@@ -60,8 +59,7 @@ const AddProductCard = () => {
               />
             </div>
 
-            <div className="form-group mt-2">
-              <label>Ürün adı</label>
+            <div className="form-group mt-3">
               <input
                 ref={nameRef}
                 type="text"
@@ -71,8 +69,7 @@ const AddProductCard = () => {
               />
             </div>
 
-            <div className="form-group mt-2">
-              <label>Fiyat</label>
+            <div className="form-group mt-3">
               <input
                 ref={priceRef}
                 type="text"
@@ -81,18 +78,17 @@ const AddProductCard = () => {
                 placeholder="Fiyat girin"
               />
             </div>
-            <div className="form-group mt-2">
-              <label>Stok</label>
+            <div className="form-group mt-3">
               <input
                 ref={stockRef}
                 type="text"
                 className="form-control"
                 id="price"
-                placeholder="Fiyat girin"
+                placeholder="Stok girin"
               />
             </div>
 
-            <button type="submit" className="btn btn-success mt-3">
+            <button type="submit" className="btn btn-success mt-4">
               Ürün gir
             </button>
           </form>
