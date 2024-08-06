@@ -41,7 +41,7 @@ const AddProductCard = () => {
   return (
     <div className="container card-center mb-3">
       <div className="card">
-        <div className="card-header">Ürün Ekle</div>
+        <h1 className="card-header fs-5">Ürün Ekle</h1>
         <div className="card-body">
           <form
             onSubmit={(e) => {
@@ -55,7 +55,7 @@ const AddProductCard = () => {
                 type="text"
                 className="form-control"
                 id="imgUrl"
-                placeholder="Ürün resmi URL si girin"
+                placeholder="Ürün görseli URL..."
               />
             </div>
 
@@ -65,7 +65,7 @@ const AddProductCard = () => {
                 type="text"
                 className="form-control"
                 id="productName"
-                placeholder="Ürün adı girin"
+                placeholder="Ürün adı..."
               />
             </div>
 
@@ -75,7 +75,7 @@ const AddProductCard = () => {
                 type="text"
                 className="form-control"
                 id="price"
-                placeholder="Fiyat girin"
+                placeholder="Fiyat..."
               />
             </div>
             <div className="form-group mt-3">
@@ -84,12 +84,12 @@ const AddProductCard = () => {
                 type="text"
                 className="form-control"
                 id="price"
-                placeholder="Stok girin"
+                placeholder="Stok..."
               />
             </div>
 
-            <button type="submit" className="btn btn-success mt-4">
-              Ürün gir
+            <button type="submit" className="btn btn-primary py-2 px-4 my-4">
+              <i className="bi bi-plus-square pe-2"></i> Yeni Ürün Ekle
             </button>
           </form>
         </div>

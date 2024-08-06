@@ -40,11 +40,7 @@ function OrderCard() {
         const user = jwtDecode(token);
         let response;
 
-        if (user.role === "admin") {
-          response = await axios.get(
-            import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/getorder"
-          );
-        } else if (user.role === "user") {
+        if (user.role === "user") {
           response = await axios.post(
             import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/getmyorder",
             { phone: user.phone }
@@ -55,7 +51,6 @@ function OrderCard() {
 
         if (response.data.orders) {
           setOrders(response.data.orders);
-          console.log(response.data.orderss);
         } else {
           setOrders([]);
         }

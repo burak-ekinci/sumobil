@@ -37,8 +37,8 @@ function ProductCard() {
   }
   if (products.length == 0) {
     return (
-      <div className="alert alert-secondary" role="alert">
-        A simple secondary alert—check it out!
+      <div className="bg-secondary-subtle rounded-4 text-dark p-4 fs-5">
+        <i className="bi bi-exclamation-square pe-2"></i> Lütfen ürün ekleyin.
       </div>
     );
   }

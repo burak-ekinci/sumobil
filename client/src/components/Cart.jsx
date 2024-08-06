@@ -41,12 +41,9 @@ const Cart = ({ order }) => {
               <div className="card-body">
                 <h5 className="card-title">{order.product.name}</h5>
 
+                <p className="card-text">{order.totalPrice} ₺</p>
                 <p className="card-text">
-                  <strong>Adet:</strong> {order.amount}
-                </p>
-
-                <p className="card-text">
-                  <strong>Ücret:</strong> {order.totalPrice} ₺
+                  {order.amount} <span>Adet</span>
                 </p>
               </div>
             </div>
@@ -57,7 +54,7 @@ const Cart = ({ order }) => {
                 }}
                 className="btn btn-outline-secondary mt-2"
               >
-                <i className="bi bi-cart-dash"></i> İptal{" "}
+                <i className="bi bi-x-lg"></i> SİL{" "}
                 {loadingCart ? (
                   <Spinner color={"white"} size={"spinner-border-sm"} />
                 ) : null}

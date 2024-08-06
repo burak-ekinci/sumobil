@@ -33,7 +33,7 @@ const LoginPage = () => {
     setLoading(true);
     // Password uzunluğu minimum 4 karakter olacak
     if (passwordRef.current.value.length < 4) {
-      toast.warning("şifre minimum 4 karakterli olmalı");
+      toast.warning("Şifre minimum 4 karakterli olmalı");
       return;
     }
 
@@ -127,23 +127,6 @@ const LoginPage = () => {
                       required
                     />
                   </div>
-                  {/* <button
-                    type="submit"
-                    className="btn btn-primary btn-md px-4 btn-block"
-                  >
-                    Giriş Yap{" "}
-                    {loading ? (
-                      <Spinner color={"white"} size={"spinner-border-sm"} />
-                    ) : null}
-                  </button>
-                  <Link
-                    to={"/signup"}
-                    type="button"
-                    className="text-primary link-underline link-underline-opacity-0 link-underline-opacity-25-hover float-end"
-                  >
-                    {" "}
-                    Hesabın yok mu? Kaydol →
-                  </Link> */}
 
                   <div className="row px-2 py-4">
                     <button

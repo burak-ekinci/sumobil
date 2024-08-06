@@ -11,7 +11,7 @@ const setProduct = async (req, res) => {
     })
    await newProduct.save()
     .then(_ => {
-        return res.json({valid: true, message: "Ürün başarıyla eklendi"})
+        return res.json({valid: true, message: "Ürün eklendi!"})
     }).catch(err => {
         res.json({valid: false, message: `Ürün eklenemedi: ${err}`})
     })
@@ -27,7 +27,7 @@ const deleteProduct = async(req, res) => {
     const productId = req.body._id;
     try {
         const response = await Product.findOneAndDelete({_id: productId})
-        res.json({valid: true, message: "Ürün başarıyla silindi"})
+        res.json({valid: true, message: "Ürün silindi!"})
     } catch (error) {
         res.json({valid: false, error})
     }
@@ -36,7 +36,7 @@ const deleteProduct = async(req, res) => {
 const updateProductStock = async (req, res) => {
     try {
         await Product.findByIdAndUpdate(req.body.id, { $set: {stock: req.body.stock}}, {new: true})
-        res.json({valid: true, message: "Ürün stoğu başarıyla güncellendi"})
+        res.json({valid: true, message: "Ürün stoğu güncellendi!"})
     } catch (error) {
         res.json({valid: false ,error})
     }
@@ -46,7 +46,7 @@ const updateProductStock = async (req, res) => {
 const updateProductPrice = async (req, res) => {
     try {
         await Product.findByIdAndUpdate(req.body.id, { $set: {price: req.body.price}}, {new: true})
-        res.json({valid: true, message: "Ürün fiyatı başarıyla güncellendi"})
+        res.json({valid: true, message: "Ürün fiyatı güncellendi!"})
     } catch (error) {
         res.json({valid: false, error})
     }

@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
   
     socket.on('disconnect', () => {
       console.log('Firma sahibi bağlantısı kesildi.');
-    });
+    });"  "
   });
 
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING)

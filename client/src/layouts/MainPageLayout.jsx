@@ -82,7 +82,7 @@ function MainPageLayout({ children }) {
           className="collapse navbar-collapse justify-content-between ms-3"
           id="navbarNav"
         >
-          <ul className="navbar-nav">
+          <ul className="navbar-nav px-2">
             <li className="nav-item">
               <span className="nav-link text-primary fw-bold">
                 {user.fullName}{" "}
@@ -111,7 +111,7 @@ function MainPageLayout({ children }) {
             onClick={() => {
               logout();
             }}
-            className="text-secondary link-underline link-underline-opacity-0 link-underline-opacity-25-hover me-3"
+            className="btn btn-outline-light border border-opacity-25 border-secondary text-secondary px-4"
             type="button"
           >
             Çıkış

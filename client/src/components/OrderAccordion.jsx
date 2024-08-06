@@ -6,10 +6,12 @@ import { jwtDecode } from "jwt-decode";
 import io from "socket.io-client";
 import Spinner from "./Spinner";
 import Accordion from "./Accordion";
+import OrderCard from "./OrderCard";
 
 function OrderAccordion() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const socket = io(import.meta.env.VITE_KEY_DB, {
@@ -39,6 +41,7 @@ function OrderAccordion() {
         // user defining
         const token = localStorage.getItem("user");
         const user = jwtDecode(token);
+        setUser(user);
         let response;
 
         if (user.role === "admin") {
@@ -81,9 +84,13 @@ function OrderAccordion() {
   if (orders.length == 0) {
     return (
       <div className="alert alert-secondary" role="alert">
-        Hiç sipariş yok
+        Hiç siparişiniz yok
       </div>
     );
+  }
+
+  if (user.role == "user") {
+    return <OrderCard />;
   }
 
   return (

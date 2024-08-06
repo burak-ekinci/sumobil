@@ -26,7 +26,7 @@ const signUp = async (req, res) => {
         });
 
         await userTemplate.save();
-        return res.json({ valid: true, message: "Kayıt tamamlandı" });
+        return res.json({ valid: true, message: "Kayıt başarılı!" });
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -40,13 +40,13 @@ const login = async (req,res,next) => {
     // Kullanıcı adı kontrolü
     const user = await User.findOne({ phone: req.body.phone });
     if (!user) {
-      return res.status(404).json({ valid: false, message: `Telefon no: ${req.body.phone} kayıtlı değil` });
+      return res.status(404).json({ valid: false, message: `${req.body.phone} telefonu kayıtlı değil.` });
     }
 
     // Şifre doğrulama
     const validPassword = user.password == req.body.password;
     if (!validPassword) {
-      return res.status(401).json({ valid: false, message: 'Hatalı telefon no/şifre!' });
+      return res.status(401).json({ valid: false, message: 'Telefon veya şifre hatalı!' });
     }
 
     // Başarılı giriş
@@ -55,7 +55,7 @@ const login = async (req,res,next) => {
       'abcd',
       { expiresIn: '2m' }
     );
-    return res.status(200).json({ valid: true, user, message: `Başarıyla giriş yaptınız: ${user.phone}`, token: token});
+    return res.status(200).json({ valid: true, user, message: `Giriş başarılı: ${user.phone}`, token: token});
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).json({ valid: false, message: `Giriş yapılırken beklenmeyen hata: ${error}`  });

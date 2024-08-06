@@ -3,7 +3,6 @@ const Product = require("../models/productModel");
 const User = require("../models/userModel");
 
 const getOrder = async (req,res) => {
- 
   const orders = await Order.aggregate([
     {
       $sort: {
@@ -38,46 +37,9 @@ const getOrder = async (req,res) => {
 
 const getMyOrder = async (req,res) => {
   const orders = await Order.find({"user.phone": req.body.phone});
+  
     return res.json({orders})
 }
-
-const getGroupedOrders = async (req, res) => {
-  try {
-    const orders = await Order.aggregate([
-      {
-        $sort: {
-          createdAt: -1 // sorting by creation date
-        }
-      },
-      {
-        $group: {
-          _id: "$user.phone",
-          orders: {
-            $push: {
-              _id: "$_id",
-              user: {
-                fullName: "$user.fullName",
-                phone: "$user.phone",
-                address: "$user.address",
-                role: "$user.role"
-              },
-              product: "$product",
-              amount: "$amount",
-              totalPrice: "$totalPrice",
-              status: "$status",
-              orderDate: "$createdAt"
-            }
-          }
-        }
-      }
-    ]);
-
-    res.json(orders);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
-
 
 const setOrder = async (req, res) => {
   try {

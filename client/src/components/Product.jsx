@@ -64,19 +64,14 @@ const Product = ({ product }) => {
         status: "Beklemede",
       };
       const response = await axios.post(
-        import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/setorder",
+        "http://localhost:3000" + "/order/setorder",
         orderTemplate
       );
       if (response.data.error) {
         throw new Error(response.data.error);
       }
       setLoadingNow(false);
-      toast.success(
-        response.data.message +
-          amountRef.current.value +
-          " tane " +
-          product.name
-      );
+      toast.success(response.data.message);
     } catch (error) {
       setLoadingNow(false);
       toast.error(error.message);
