@@ -42,7 +42,7 @@ function OrderCard() {
 
         if (user.role === "admin") {
           response = await axios.get(
-            "http://localhost:3000" + "/order/getorder"
+            import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/getorder"
           );
         } else if (user.role === "user") {
           response = await axios.post(
