@@ -10,7 +10,7 @@ const Accordion = ({ username, children }) => {
             className="accordion-button collapsed"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#collapseOne"
+            data-bs-target={"#" + children[0]._id}
             aria-expanded="false"
             aria-controls="collapseOne"
           >
@@ -18,7 +18,7 @@ const Accordion = ({ username, children }) => {
           </button>
         </h2>
         <div
-          id="collapseOne"
+          id={children[0]._id}
           className="accordion-collapse collapse"
           data-bs-parent="#accordionExample"
         >
