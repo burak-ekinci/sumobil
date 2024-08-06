@@ -2,34 +2,40 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-light border-opacity-25 border-4 text-secondary border-top border-primary rounded-5 py-2">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-4 col-md-8 text-primary d-flex justify-content-center align-items-center">
-            <img
-              width={50}
-              src="/icon.png"
-              alt="SuMobilLogo"
-              className="img-fluid me-2"
-            />
-            <h3>AGORA SU</h3>
-          </div>
-
-          <div className="col-lg-4 col-md-8 text-center col-md-6 ">
-            <ul className="list-unstyled">
-              <li>Burak Ekinci</li>
-              <li className="fw-bold">0541 123 9825</li>
-              <li>X mahallesi x caddesi x sokağı</li>
-            </ul>
-          </div>
-
-          <div className="col-lg-4 col-md-3 d-flex justify-content-center align-items-center">
-            <a href="tel:+905411239825" className="btn btn-primary">
-              Hemen Ara
-            </a>
-          </div>
-        </div>
+    <footer className="d-flex flex-wrap justify-content-around bg-light border-opacity-10 border-2 text-secondary border-top border-secondary py-4 gap-4">
+      <div className="d-flex flex-column gap-2 text-primary justify-content-center align-items-center">
+        <img
+          width={50}
+          src="/icon.png"
+          alt="SuMobilLogo"
+          className="img-fluid me-2"
+        />
+        <h2 className=" fs-4 fw-bold">AGORA SU</h2>
       </div>
+
+      <div className="d-flex flex-column gap-2 text-secondary justify-content-center align-items-center text-start">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item list-group-item-light">
+            <i class="bi bi-headset pe-2"></i>Gökhan Öztürk
+          </li>
+          <a
+            href="tel:+905411239825"
+            className="list-group-item  list-group-item-light float-start"
+          >
+            <i class="bi bi-telephone-outbound pe-2"></i> 0541 123 9825
+          </a>
+          <li className="list-group-item list-group-item-light">
+            <i class="bi bi-buildings pe-2"></i>İsmet Kaptan Mh. 1374 Sk. 14/603
+            Konak, İzmir
+          </li>
+        </ul>
+      </div>
+
+      {/* <div className="justify-content-center align-items-center">
+        <a href="tel:+905411239825" className="btn btn-primary">
+          Hemen Ara
+        </a>
+      </div> */}
     </footer>
   );
 };

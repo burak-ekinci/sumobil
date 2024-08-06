@@ -64,7 +64,7 @@ const Product = ({ product }) => {
         status: "Beklemede",
       };
       const response = await axios.post(
-        "http://localhost:3000" + "/order/setorder",
+        import.meta.env.VITE_KEY_CONNECTION_STRING + "/order/setorder",
         orderTemplate
       );
       if (response.data.error) {

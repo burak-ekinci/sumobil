@@ -3,9 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Spinner from "./Spinner";
+import PhoneInput from "react-phone-number-input";
 
 const SignUpPage = () => {
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState();
+
   // use navigate hook for travel between pages
   const navigate = useNavigate();
   useEffect(() => {
@@ -19,12 +22,14 @@ const SignUpPage = () => {
 
     checkLogin();
   }, [navigate]);
+
   // Access the HTML elements value man!
   const fullNameRef = useRef(null);
   const emailRef = useRef(null);
-  const phoneRef = useRef(null);
+  const phoneRef = useRef();
   const addressRef = useRef(null);
   const passwordRef = useRef(null);
+  const rePasswordRef = useRef(null);
 
   // UserCheck function
   const userCheck = async () => {
@@ -32,14 +37,21 @@ const SignUpPage = () => {
     // Password length must be min 4 char
     if (passwordRef.current.value.length < 4) {
       toast.warning("Şifre minimum 4 karakterli olmalı");
+      setLoading(false);
       // don't show if user have
       return;
     }
+    if (passwordRef.current.value != rePasswordRef.current.value) {
+      toast.error("Şifreler eşleşmiyor!");
+      setLoading(false);
+      return;
+    }
+
     const res = await axios
       .post(import.meta.env.VITE_KEY_CONNECTION_STRING + "/user/signup", {
         fullName: fullNameRef.current.value,
         email: emailRef.current.value,
-        phone: phoneRef.current.value,
+        phone: value,
         address: addressRef.current.value,
         password: passwordRef.current.value,
       })
@@ -69,6 +81,32 @@ const SignUpPage = () => {
         navigate("/signup");
       });
   };
+  // Phone number input validation
+  function validatePhoneNumber() {
+    var phoneNumber = phoneRef.current.value;
+    var [firstElement] = phoneRef.current.value;
+
+    if (firstElement == "0") {
+      toast.error(
+        "Lütfen başında 0 olmadan 10 haneli telefon numaranızı girin."
+      );
+
+      return;
+    }
+
+    // Türkiye telefon numarası doğrulama regex (başında 0 olmayan 10 haneli numara)
+    var regex = /^[1-9][0-9]{9}$/;
+
+    if (regex.test(phoneNumber)) {
+      setValidationMessage("Telefon numarası geçerli");
+      setValidationColor("success");
+    } else {
+      setValidationMessage(
+        "Lütfen başında 0 olmadan 10 haneli telefon numaranızı girin."
+      );
+      setValidationColor("danger");
+    }
+  }
 
   return (
     <>
@@ -77,7 +115,10 @@ const SignUpPage = () => {
           <div className="col-md-6">
             <div className="card">
               <div className="card-body">
-                <h3 className="card-title text-center">
+                <span className="d-flex justify-content-between align-items-center pt-2 pb-4">
+                  <h1 className="card-title text-center text-primary fs-3 fw-bold">
+                    KAYIT OL
+                  </h1>
                   <a className="navbar-brand" href="/">
                     <img
                       src="/logo1.png"
@@ -88,11 +129,7 @@ const SignUpPage = () => {
                       className="d-inline-block align-top img-fluid"
                     />
                   </a>
-                </h3>
-                <hr />
-                <h3 className="card-title text-center text-primary fs-2">
-                  KAYIT OL
-                </h3>
+                </span>
 
                 <form
                   onSubmit={(e) => {
@@ -100,86 +137,103 @@ const SignUpPage = () => {
                     userCheck();
                   }}
                 >
-                  <div className="form-group mb-3">
-                    <label className="form-label">İsim Soyisim</label>
+                  <div className="form-group py-4">
+                    {/* <label className="form-label text-secondary">
+                      Ad Soyad
+                    </label> */}
                     <input
                       type="text"
                       className="form-control"
                       id="text"
-                      placeholder="İsminizi ve Soyisminizi girin"
+                      placeholder="Ad Soyad..."
                       ref={fullNameRef}
                       required
                     />
                   </div>
-                  <div className="form-group mb-3">
-                    <label className="form-label">Email</label>
+                  <div className="form-group pb-4">
+                    {/* <label className="form-label text-secondary">Email</label> */}
                     <input
                       type="email"
                       className="form-control"
                       id="inputEmail"
-                      placeholder="Email girin"
+                      placeholder="Email..."
                       aria-describedby="emailHelp"
                       ref={emailRef}
                       minLength={1}
                       required
                     />
                   </div>
-                  <div className="form-group mb-3">
-                    <label className="form-label text-danger fs-bold">
-                      Başında 0 olmadan Telefon Numaranız
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="inputUsername"
-                      placeholder="Telefon numaranızı girin (örn: 5431231212)"
-                      ref={phoneRef}
-                      minLength={10}
-                      maxLength={10}
-                      required
+
+                  <div className="form-group pb-4">
+                    <PhoneInput
+                      international
+                      defaultCountry="TR"
+                      placeholder="Enter phone number"
+                      value={value}
+                      onChange={setValue}
                     />
                   </div>
-                  <div className="form-group mb-3">
-                    <label className="form-label">Su İstenilecek Adres</label>
+
+                  <div className="form-group pb-4">
                     <input
                       type="text"
                       className="form-control"
                       id="address"
-                      placeholder="Su isteyeceğiniz ev adresini girin"
+                      placeholder="Su sipariş adresi..."
                       ref={addressRef}
                       required
                     />
                   </div>
-                  <div className="form-group mb-3">
-                    <label className="form-label">Password</label>
+
+                  <div className="form-group pb-4">
+                    {/* <label className="form-label text-secondary">
+                      Password
+                    </label> */}
                     <input
                       type="password"
                       className="form-control"
                       id="inputPassword"
-                      placeholder="Şifrenizi girin"
+                      placeholder="Şifreniz..."
                       ref={passwordRef}
                       minLength={3}
                       maxLength={10}
                       required
                     />
                   </div>
-                  <button
-                    type="submit"
-                    className="btn btn-primary btn-md px-4 btn-block"
-                  >
-                    KAYDOL{" "}
-                    {loading ? (
-                      <Spinner color={"white"} size={"spinner-border-sm"} />
-                    ) : null}
-                  </button>
-                  <Link
-                    to={"/login"}
-                    type="button"
-                    className="btn btn-outline-primary float-end"
-                  >
-                    {" "}
-                    Zaten hesabın var mı? Giriş yap.
-                  </Link>
+                  <div className="form-group pb-4">
+                    {/* <label className="form-label text-secondary">
+                      Password
+                    </label> */}
+                    <input
+                      type="password"
+                      className="form-control"
+                      id="inputrePassword"
+                      placeholder="Şifreniz Tekrar..."
+                      ref={rePasswordRef}
+                      minLength={3}
+                      maxLength={10}
+                      required
+                    />
+                  </div>
+
+                  <div className="row px-2 py-4">
+                    <button type="submit" className="btn btn-primary">
+                      KAYDOL{" "}
+                      {loading ? (
+                        <Spinner color={"white"} size={"spinner-border-sm"} />
+                      ) : null}
+                    </button>
+                  </div>
+                  <div className="row px-2">
+                    <Link
+                      to={"/login"}
+                      type="button"
+                      className="btn btn-outline-light text-secondary"
+                    >
+                      {" "}
+                      Zaten hesabın var mı? Giriş yap →
+                    </Link>
+                  </div>
                 </form>
               </div>
             </div>

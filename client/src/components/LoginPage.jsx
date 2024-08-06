@@ -3,9 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Spinner from "./Spinner";
+import PhoneInput from "react-phone-number-input";
 
 const LoginPage = () => {
+  // State managements
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState();
+
   // Navigate Hook
   const navigate = useNavigate();
   useEffect(() => {
@@ -30,13 +34,12 @@ const LoginPage = () => {
     // Password uzunluğu minimum 4 karakter olacak
     if (passwordRef.current.value.length < 4) {
       toast.warning("şifre minimum 4 karakterli olmalı");
-      // user
       return;
     }
 
     // User logged template
     const userTemplate = {
-      phone: phoneRef.current.value,
+      phone: value,
       password: passwordRef.current.value,
     };
 
@@ -80,7 +83,17 @@ const LoginPage = () => {
           <div className="col-md-6">
             <div className="card">
               <div className="card-body">
-                <h3 className="card-title text-center">
+                <span className="d-flex justify-content-between align-items-center pt-2 pb-4">
+                  <h1 className="card-title text-center text-primary fs-3 fw-bold">
+                    GİRİŞ YAP
+                  </h1>
+                  <button
+                    onClick={() => {
+                      console.log(value);
+                    }}
+                  >
+                    test
+                  </button>
                   <a className="navbar-brand" href="/">
                     <img
                       src="/logo1.png"
@@ -91,44 +104,36 @@ const LoginPage = () => {
                       className="d-inline-block align-top img-fluid"
                     />
                   </a>
-                </h3>
-                <hr />
-                <h3 className="card-title text-center fs-2 text-primary">
-                  GİRİŞ YAP
-                </h3>
+                </span>
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     userCheck();
                   }}
                 >
-                  <div className="form-group mb-3">
-                    <label>Tel No</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="username"
-                      placeholder="Telefon numaranızı girin"
-                      ref={phoneRef}
-                      minLength={10}
-                      maxLength={10}
-                      required
+                  <div className="form-group py-4">
+                    <PhoneInput
+                      international
+                      defaultCountry="TR"
+                      placeholder="Enter phone number"
+                      value={value}
+                      onChange={setValue}
                     />
                   </div>
-                  <div className="form-group mb-3">
-                    <label>Şifre</label>
+                  <div className="form-group pb-4">
+                    {/* <label>Şifre</label> */}
                     <input
                       type="password"
                       className="form-control"
                       id="password"
-                      placeholder="Şifrenizi girin"
+                      placeholder="Şifre..."
                       ref={passwordRef}
                       minLength={3}
                       maxLength={10}
                       required
                     />
                   </div>
-                  <button
+                  {/* <button
                     type="submit"
                     className="btn btn-primary btn-md px-4 btn-block"
                   >
@@ -143,8 +148,30 @@ const LoginPage = () => {
                     className="text-primary link-underline link-underline-opacity-0 link-underline-opacity-25-hover float-end"
                   >
                     {" "}
-                    Hesabın yok mu? Kaydol.
-                  </Link>
+                    Hesabın yok mu? Kaydol →
+                  </Link> */}
+
+                  <div className="row px-2 py-4">
+                    <button
+                      type="submit"
+                      className="btn btn-primary align-items-center"
+                    >
+                      Giriş Yap{" "}
+                      {loading ? (
+                        <Spinner color={"white"} size={"spinner-border-sm"} />
+                      ) : null}
+                    </button>
+                  </div>
+                  <div className="row px-2">
+                    <Link
+                      to={"/signup"}
+                      type="button"
+                      className="btn btn-outline-light text-secondary"
+                    >
+                      {" "}
+                      Hesabın yok mu? Kaydol →
+                    </Link>
+                  </div>
                 </form>
               </div>
             </div>

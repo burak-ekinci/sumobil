@@ -63,7 +63,7 @@ function MainPageLayout({ children }) {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg border-bottom border-primary border-opacity-50  rounded-5 p-2">
+      <nav className="navbar navbar-expand-lg border-bottom border-primary border-opacity-10 p-2">
         <a className="navbar-brand ms-2" href="/">
           <img style={{ maxWidth: 100 }} src="/logo1.png" alt="" />
         </a>

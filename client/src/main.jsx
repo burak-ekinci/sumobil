@@ -15,6 +15,7 @@ import AdminLayout from "./components/AdminLayout";
 import AddProductCard from "./components/AddProductCard";
 import OrderCard from "./components/OrderCard";
 import { CartProvider } from "./contexts/CartContext.jsx";
+import "react-phone-number-input/style.css";
 
 const router = createBrowserRouter([
   {

@@ -35,6 +35,13 @@ function ProductCard() {
       </>
     );
   }
+  if (products.length == 0) {
+    return (
+      <div class="alert alert-secondary" role="alert">
+        A simple secondary alert—check it out!
+      </div>
+    );
+  }
 
   return (
     <>
